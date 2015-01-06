@@ -1,0 +1,14 @@
+/* top-bar */
+.top-bar {
+    background: #3887c7;
+    box-shadow: 0px 5px 0px #2776b6, 0px 5px 2px #1665a5;
+
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+/* top-bar.a */
+a.top-bar-text {
+    font-size: 20px;
+    color: #fff;
+}
