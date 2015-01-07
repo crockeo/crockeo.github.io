@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://crockeo.github.io/</loc>
-    <lastmod>0001-01-01T00:00:00+00:00</lastmod>
+    <lastmod>2015-01-07T14:10:59-05:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://crockeo.github.io/blog/newblog/</loc>
+    <lastmod>2015-01-07T14:10:59-05:00</lastmod>
   </url>
   
 </urlset>
