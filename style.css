@@ -1,3 +1,23 @@
+/*
+ * Styling the top bar of the webpage.
+ */
+.top-bar {
+    box-shadow: 0px 2px 0px #333, 0px 2px 2px #333;
+    background: #777;
+    padding: 12px;
+}
+
+.top-bar-text {
+    font-size: 36px;
+    padding: 8px;
+    color: #fff;
+}
+
+.top-bar-text:visited { color: #eee; }
+.top-bar-text:active { color: #eee; }
+.top-bar-text:hover { color: #eee; }
+.top-bar-text:link { color: #eee; }
+
 /* A class for the main title for the page. */
 .title-text {
     font-family: 'Lobster Two', cursive;

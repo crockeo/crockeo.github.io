@@ -1,0 +1,16 @@
+doctype html
+
+html
+    head
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+        link(rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lobster+Two|Slabo+27px')
+        link(rel='stylesheet' href='style.css')
+            
+        block styles
+        block scripts
+            
+    body
+        .top-bar
+            a.top-bar-text(href='http://crockeo.github.io') Home
+            a.top-bar-text(href='http://crockeo.github.io/blog') Blog
+        block content
