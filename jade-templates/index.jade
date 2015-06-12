@@ -3,7 +3,9 @@ extends ./wrapper.jade
 block content
     .container
         h1.text-center.title-text Cerek Hillen
-        h2.text-center.project-text Programmer: <a href="http://github.com/crockeo" target="_blank"><img src="GitHu-Mark-32px.png" width="25" /></a>
+        h2.text-center.project-text Programmer:
+            a(href='http://github.com/crockeo' target='_blank')
+                img(src='GitHub-Mark-32px.png' width='25')
         
         hr
             
@@ -11,9 +13,10 @@ block content
             h2.project-text Projects&mdash;
             table.table.table-striped
                 thead
-                    td Project Name
-                    td Language
-                    td Description
+                    tr
+                        th Project Name
+                        th Language
+                        th Description
 
                 tbody
                     tr
@@ -80,12 +83,79 @@ block content
             h2.project-text Experience&mdash;
             table.table.table-striped
                 thead
-                    td Name
-                    td Description
-                    td Timeframe
+                    tr
+                        th Name
+                        th Description
+                        th Timeframe
                     
                 tbody
                     tr
                         td Recurse Center
                         td Self branded as a programmers' retreat - it serves as a congretational space for programmers to collaboratively learn with the guidance of paid facilitators.
                         td Fall 2014
+                        
+        div
+            h2.project-text Education&mdash;
+            table.table.table-striped
+                thead
+                    tr
+                        th Course Name
+                        th Institution
+                        th Description
+                        th Timeframe
+                        th Certificate
+
+                tbody
+                    tr
+                        td CS50x - Introduction to Computer Science
+                        td Harvard
+                        td An online introduction to basic computer science concepts.
+                        td 2012/2013
+                        td
+                            a(href='certificates/cs50x.pdf') Link
+                            
+                    tr
+                        td Functional Programming Principles in Scala
+                        td EPFL
+                        td A course on basic functional programming principles.
+                        td Fall 2013
+                        td
+                            a(href='certificates/funcprog.pdf') Link
+                            
+                    tr
+                        td Principles of Reactive Programming
+                        td EPFL
+                        td Using the base provided by the introduction to functional programming also offered by the EPFL, it expands into the more specific realm of functional reactive programming.
+                        td Fall 2013
+                        td
+                            a(href='certificates/reactive.pdf') Link
+
+                    tr
+                        td Algorithms I
+                        td Princeton
+                        td The first half of a data structures and algorithms class.
+                        td Spring 2014
+                        td Course does not provide a certificate.
+                        
+                    tr
+                        td Algorithms II
+                        td Princeton
+                        td The second half of a data structures and algorithms class.
+                        td Spring 2014
+                        td Course does not provide a certificate.
+                        
+                    tr
+                        td Calculus 1
+                        td The Ohio State University
+                        td A calculus course covering both derivative and integral calculus along with some of its applications.
+                        td Fall 2013
+                        td
+                            a(href='certificates/calc1.pdf') Link
+                    
+                    tr
+                        td Calculus 2
+                        td The Ohio State University
+                        td A course covering calculus surrounding sequences and series.
+                        td Spring 2014
+                        td
+                            a(href='certificates/calc2.pdf') Link
