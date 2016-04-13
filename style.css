@@ -28,3 +28,11 @@
 .project-text {
     font-family: 'Slabo 27px', serif;
 }
+
+.right-space {
+    margin-right 4px;
+}
+
+.primary-block {
+    box-shadow: -4px -4px 4px #999, 4px 4px 4px #999;
+}
