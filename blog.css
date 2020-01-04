@@ -1,0 +1,30 @@
+.blog-content {
+    background: #08402a;
+    padding: 3rem 0rem 1rem 0rem;
+    min-height: calc(100vh - 66px);
+    text-align: center;
+}
+
+.blog-title {
+    color: #ffffff;
+    font-size: 2.6rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.blog-title-date {
+    color: #bbbbbb;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.blog-text-container {
+    background: #ffffff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin: 2rem auto 1rem auto;
+    max-width: 60rem;
+    padding: 0.4rem 3rem;
+    text-align: justify;
+}

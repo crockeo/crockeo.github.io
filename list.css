@@ -1,0 +1,29 @@
+.list-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #08402a;
+    min-height: calc(100vh - 66px);
+}
+
+.list-item {
+    background: #ffffff;
+    border-radius: 4px;
+    margin: 1rem;
+    padding: 1rem;
+    height: fit-content;
+}
+
+.list-item-link {
+    color: #333333;
+}
+
+.list-item-date {
+    color: #aaaaaa;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.list-item-summary {
+    color: #555555;
+    font-size: 1rem;
+}
