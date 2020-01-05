@@ -1,5 +1,6 @@
 .blog-content {
     background: #08402a;
+    box-sizing: border-box;
     padding: 3rem 0rem 1rem 0rem;
     min-height: calc(100vh - 66px);
     text-align: center;
