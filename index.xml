@@ -6,10 +6,19 @@
     <description>Recent content on Cerek Hillen&#39;s Personal CV and Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 10 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://crockeo.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Recurse 2020, Week 1</title>
+      <link>http://crockeo.github.io/blog/2020-01-10-week_1/</link>
+      <pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://crockeo.github.io/blog/2020-01-10-week_1/</guid>
+      <description>Math, math, and more math. Also a Zulip bot.</description>
+    </item>
     
     <item>
       <title>Recurse 2020, Week 0</title>
