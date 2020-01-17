@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/index.css" />
+
+        <link rel="stylesheet" href="/blog.css" />
+
+    </head>
+
+    <body>
+        <div class="top-bar">
+    <a class="top-bar-link" href="/">Home</a>
+    <div class="top-bar-name">Cerek Hillen</div>
+    <a class="top-bar-link" href="/blog">Blog</a>
+</div>
+
+
+        <div class="blog-content">
+            <a class="blog-title" href="http://crockeo.github.io/blog/2020-01-17-week_2/">
+                Recurse 2020, Week 2
+
+                <div class="blog-title-date">Jan 17, 2020</div>
+            </a>
+
+            <div class="blog-text-container">
+                <h1 id="week-2">Week 2</h1>
+<h2 id="on-trust">On Trust</h2>
+<p>It is not surprising that in a time of such uncertainty, we grasp at that which is familiar. Our collective fondness of nostalgic media betrays this desire. We keep reimagining our favorite movies, series, or games as a way to hold onto some kind of stable ground. Recently, I was walking out of the 155th street subway stop and saw, staring at me, a blunt reminder of this fact: Picard airing January 23rd on CBS All Access. I'm one of the first to admit that my personality was shaped by the ethics espoused by Star Trek: The Next Generation. During formative years of my life, the show acted as a moral compass, with Patrick Stewart's Picard as a shining north star.</p>
+<p>Since starting RC, people have asked me a lot about <em>why</em> exactly I've decided to dedicate myself so totally to mathematics. Each time, I haven't really been able to come up with a satisfactory answer. I eventually settle for &ldquo;it's cool&rdquo; and move on. I wonder if, instead, it's another strategy for dealing with uncertainty, not unlike nostalgia. Just as nostalgic media appeals to our pathos, mathematics grounds us in a way that appeals to our logos.</p>
+<p>In a world moving further away from verifiable truths, there is some comfort in knowing that there exists an internally consistent system with which you can show the correctness of your beliefs—even if only within the system itself. This narrative only becomes stronger when you account for the fact that I'm spending most of my time learning about ground-floor level concepts in math like <a href="https://en.wikipedia.org/wiki/Group_theory">group theory</a>, <a href="https://en.wikipedia.org/wiki/Homotopy_type_theory">Homotopy Type Theory</a>, and <a href="https://en.wikipedia.org/wiki/Zermelo%E2%80%93Fraenkel_set_theory">ZF Set Theory</a>. The former provides the practical basis of so much other math, including much of numerical analysis, while the latter two provide the theoretical basis for&hellip; everything. You don't ever need to work from a base level of trust, because you can verify the correctness of a system by showing its consistency.</p>
+<p>But that narrative is wrong.</p>
+<p>First, you cannot connect mathematics with the external world without trust that they are analogous. Although math is, fundamentally, the construction of models that reflect the real world, there is no way to formally show that connection. If one were to adopt a mathematical system to do so, they would fall into the same trap (maths all the way down).</p>
+<p>Second, even if one weren't interested in showing the extrinsic correctness of math, there is no way to ensure our mathematical system is consistent. We can show that it isn't, as happened frequently in the <em>Grundlagenkrise der Mathematik</em>, like the famous <a href="https://en.wikipedia.org/wiki/Russell%27s_paradox">Russel's Paradox</a> which showed <a href="https://en.wikipedia.org/wiki/Naive_set_theory">Naive Set Theory</a> that it was, indeed, naive. However for any consistent mathematical system, we will not be able to prove its consistency by <a href="https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems">Gödel's Second Incompleteness Theorem</a>. The best we can do is to hope that we don't stumble across an inconsistency, and trust that our system is consistent.</p>
+<h2 id="lean">Lean</h2>
+<p>To get away from the &ldquo;deeply&rdquo; philosophical conversations likened to a teenager discovering relativism for the first time: I've been learning <a href="https://leanprover.github.io/">Lean</a>! It's a theorem prover, aka a competitor to <a href="https://coq.inria.fr/">Coq</a>, with way better tooling. I'm picking it up as a means to validate the correctness of my proofs while working through <a href="http://abstract.ups.edu/">Abstract Algebra: Theory and Applications</a> and <a href="https://hott.github.io/book/nightly/hott-online-1239-g9a4dadb.pdf">Homotopy Type Theory: Univalent Foundations of Mathematics</a>.</p>
+<p>Particularly with Homotopy Type Theory, I found myself so out of place with the introduction to Type Theory that I was unable to validate its internal consistency. At the suggestion of another Recurser, I jumped ahead to the exercises, but found them no help. If I couldn't show that my proofs were consistent (and in fact entailed that which I wanted to prove), then they were no more of an indication of consistency than the text itself.</p>
+<p>And so: I turned to Lean! I've heard from some folks that it might not have the feature set required to go through the entirety of Homotopy Type Theory, but it should be able to handle the introductory chapters. As far as I'm concerned that's good enough for me. To learn Lean I'm going through the <a href="http://wwwf.imperial.ac.uk/~buzzard/xena/natural_number_game/">Natural Number Game</a>, which has you define and prove lemmas and theorems about natural numbers using Peano's axioms. All in all it's a great time. If you're interested in math then I would definitely say that you should take a crack at it!</p>
+
+            </div>
+        </div>
+    </body>
+</html>
