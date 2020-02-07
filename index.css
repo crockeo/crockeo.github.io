@@ -6,6 +6,12 @@ body {
     margin: 0px;
 }
 
+code {
+    background: #eeeeee;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
 h2 {
     color: #4a4a4a;
 }
