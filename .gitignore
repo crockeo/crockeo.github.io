@@ -1,5 +1,0 @@
-# Ignoring any HTML files in the jade-templates.
-jade-templates/*.html
-
-# Ignoring the generated wrapper file.
-wrapper.html

@@ -1,50 +1,81 @@
+:root {
+	--hawaii-background: #332a24;
+	--hawaii-background-light: #40352d;
+	--hawaii-background-dark: #26201b;
+	--hawaii-comment: #997e6d;
+	--hawaii-text: #ffffff;
+
+	--hawaii-highlight-blue: #79eaf2;
+	--hawaii-highlight-green: #aff279;
+	--hawaii-highlight-orange: #ffb080;
+	--hawaii-highlight-purple: #bb80ff;
+	--hawaii-highlight-red: #ff4040;
+}
+
 body {
-    color: #333;
-    font-family: 'Rubik', sans-serif;
-    font-size: 1.4rem;
-    padding: 0px;
-    margin: 0px;
+	background-color: var(--hawaii-background-dark);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23332a24'/%3E%3Cstop offset='1' stop-color='%2326201b'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%2340352d' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%2340352d' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.5'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
+	background-attachment: fixed;
+	background-size: cover;
+	box-sizing: border-box;
+	color: var(--hawaii-highlight-orange);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-family: 'Fira Mono', monospace;
+	margin: 0;
+	min-height: 100vh;
+	padding: 1em 2rem 4rem 2rem;
 }
 
-code {
-    background: #eeeeee;
-    border-radius: 4px;
-    padding: 2px 4px;
+a {
+	color: var(--hawaii-highlight-blue);
 }
 
-h2 {
-    color: #4a4a4a;
+.large {
+	font-size: 3rem;
 }
 
-.top-bar {
-    align-content: center;
-    background: #0d6947;
-    color: #ffffff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: 1rem 2rem;
+.medium {
+	font-size: 1.5rem;
 }
 
-.top-bar-name {
-    font-size: 1.8rem;
-    vertical-align: middle;;
+.small {
+	font-size: 1.1rem;
 }
 
-.top-bar-link {
-    cursor: pointer;
-    color: #ffffff;
-    text-decoration: none;
-    vertical-align: middle;
+.tiny {
+	font-size: 0.6rem;
 }
 
-.top-bar-link:visited {
-    color: #ffffff;
+.space::before {
+	content: "\00a0";
 }
 
-.content {
-    padding: 1rem;
+.indent {
+	padding-left: 1rem;
 }
 
-.primary-color { color: #0D6946; }
-.dark-color { color: #08402a; }
+.comment {
+	color: var(--hawaii-comment);
+}
+
+.highlight-blue {
+	color: var(--hawaii-highlight-blue);
+}
+
+.highlight-green {
+	color: var(--hawaii-highlight-green);
+}
+
+.highlight-orange {
+	color: var(--hawaii-highlight-orange);
+}
+
+.highlight-purple {
+	color: var(--hawaii-highlight-purple);
+}
+
+.highlight-red {
+	color: var(--hawaii-highlight-red);
+}
