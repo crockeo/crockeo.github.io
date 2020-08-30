@@ -101,6 +101,5 @@ a {
 .logo {
     height: 2.5rem;
     margin: calc(5rem / 2 - 2.5rem / 2) auto;
-    filter: grayscale(100%) brightness(100000%);
     filter: grayscale(1.0) brightness(0) invert(72%) sepia(31%) saturate(703%) hue-rotate(330deg) brightness(101%) contrast(106%);;
 }
