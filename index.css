@@ -84,6 +84,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    text-align: center;
 }
 
 .logo-container {
@@ -102,4 +103,25 @@ a {
     height: 2.5rem;
     margin: calc(5rem / 2 - 2.5rem / 2) auto;
     filter: grayscale(1.0) brightness(0) invert(72%) sepia(31%) saturate(703%) hue-rotate(330deg) brightness(101%) contrast(106%);;
+}
+
+@media only screen and (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+    }
+
+    .top-elem {
+        margin: 0rem auto 1rem auto;
+        text-align: left;
+    }
+
+    .logo-container {
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .logo {
+        height: 2.2rem;
+        margin: calc(4rem / 2 - 2.2rem / 2) auto;
+    }
 }
