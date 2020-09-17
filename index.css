@@ -28,6 +28,11 @@ body {
 	padding: 1em 2rem 4rem 2rem;
 }
 
+::selection {
+    background: var(--hawaii-highlight-orange);
+    color: var(--hawaii-background);
+}
+
 a {
 	color: var(--hawaii-highlight-blue);
 }
