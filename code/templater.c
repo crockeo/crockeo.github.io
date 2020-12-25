@@ -121,6 +121,7 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
 int convert_text(FILE *in_markdown, FILE *out_html) {
   bool in_italic = false;
   bool in_bold = false;
+  bool in_code = false;
 
   fprintf(out_html, "<p>");
   char c;
@@ -147,11 +148,35 @@ int convert_text(FILE *in_markdown, FILE *out_html) {
         fprintf(out_html, "</b>");
         in_bold = false;
       }
+    } else if (c == '`') {
+      if (!in_code) {
+        fprintf(out_html, "<code>");
+        in_code = true;
+      } else {
+        fprintf(out_html, "</code>");
+        in_code = false;
+      }
     } else {
       fputc(c, out_html);
     }
   }
   fprintf(out_html, "</p>\n");
+  return 0;
+}
+
+int convert_ordered_list(FILE *in_markdown, FILE *out_html) {
+  return 0;
+}
+
+int convert_unordered_list(FILE *in_markdown, FILE *out_html) {
+  return 0;
+}
+
+int convert_code_block(FILE *in_markdown, FILE *out_html) {
+  return 0;
+}
+
+int convert_image(FILE *in_markdown, FILE *out_html) {
   return 0;
 }
 
