@@ -1,10 +1,12 @@
 # break projects
 
+Written: 2020-12-25
+
 So it's the holidays and it turns out I like programming a little to much. I've been working on some things during my time off from work, and I want to give a little spotlight to each of them.
 
 ## [I switched to neovim](https://github.com/crockeo/nvim)
 
-In the beginning of 2020, back before we knew what coronavirus was, I went back to the [Recurse Center](https://recurse.com) for a "half batch"&mdash;a 6-week (instead of the normal 12-week) programming retreat where I could do, more or less, anything I wanted. I met another recurser whose online moniker is [neeasade](https://neeasade.net/). If you click that link (and you should), you'll see they're a [ricer](https://www.reddit.com/r/unixporn/comments/3iy3wd/stupid_question_what_is_ricing/) and an [Emacs](https://emacs.sexy/)-er. To make a long story short, [Neeasade brought me into the fold](https://github.com/crockeo/.emacs.d).
+In the beginning of 2020, back before we knew what coronavirus was, I went back to the [Recurse Center](https://recurse.com) for a "half batch"&mdash;a 6-week (instead of the normal 12-week) programming retreat where I could do, more or less, anything I wanted. I met another recurser whose online moniker is [neeasade](https://neeasade.net/). If you click that link (and you should), you'll see they're a [ricer](https://www.reddit.com/r/unixporn/comments/3iy3wd/stupid_question_what_is_ricing/) and an [Emacs](https://emacs.sexy/)-er. To make a long story short, neeasade [brought me into the fold](https://github.com/crockeo/.emacs.d).
 
 Now almost a full year later, I switched from Emacs to [Neovim](https://neovim.io/). This shift was precipitated by the fact that my Emacs kept on freezing. The normal advice of sending a `SIGUSR2` to enter the debugger didn't end up working and so I turned to `lldb` which showed that Emacs was waiting for user input, super helpful. I ended up tracking down the issue to some combination of [lsp-mode](https://github.com/emacs-lsp/lsp-mode) and [clangd](https://clangd.llvm.org/) but, frankly, could not be bothered to upstream a fix.
 

@@ -35,6 +35,48 @@ int take_oneof(FILE *in, const char *options, size_t len) {
   return count;
 }
 
+// reads characters in from the provided file until any one of the provided
+// characters is encountered.
+char *take_until(FILE *in, const char *options, size_t len) {
+  size_t size = 512;
+  size_t pos = 0;
+
+  char *buf = (char *)malloc(sizeof(char) * size);
+  char c;
+  while ((c = fgetc(in)) != EOF) {
+    bool found_option = false;
+    for (size_t i = 0; i < len; i++) {
+      if (c == options[i]) {
+        found_option = true;
+        break;
+      }
+    }
+
+    if (found_option) {
+      ungetc(c, in);
+      break;
+    }
+
+    buf[pos] = c;
+    pos++;
+    // resize at (size - 1) so we have space for the null terminator
+    if (pos >= size - 1) {
+      char *new_buf = (char *)malloc(sizeof(char) * 2 * size);
+      memcpy(new_buf, buf, sizeof(char) * pos);
+      free(buf);
+      buf = new_buf;
+    }
+  }
+
+  if (c == EOF && errno != 0) {
+    free(buf);
+    return NULL;
+  }
+
+  buf[pos] = '\0';
+  return buf;
+}
+
 // peeks at the next value in the provided file.
 int peek(FILE *in) {
   int result = fgetc(in);
@@ -90,32 +132,48 @@ int pipe_from(const char *src_file, FILE *out) {
   return ret;
 }
 
-// each of the following markdown functions expect to be called
-// at the beginning of a line unless otherwise specified.
-int convert_header(FILE *in_markdown, FILE *out_html) {
-  int hash_count = take_oneof(in_markdown, "#", 1);
-  if (hash_count < 0) {
+int convert_link(FILE *in_markdown, FILE *out_html) {
+  if (fgetc(in_markdown) != '[') {
+    errno = EINVAL;
     return -1;
   }
 
-  if (hash_count >= 6) {
-    for (int i = 0; i < hash_count; i++) {
-      if (fputc('#', out_html) == EOF) {
-        return -1;
-      }
-    }
+  char *text = take_until(in_markdown, "]", 1);
+  if (text == NULL) {
+    return -1;
   }
 
-  take_oneof(in_markdown, " \t", 2);
-
-  fprintf(out_html, "<h%d>", hash_count);
-  char c;
-  while ((c = fgetc(in_markdown)) != '\n' && c != EOF) {
-    fputc(c, out_html);
+  if (fgetc(in_markdown) != ']') {
+    errno = EINVAL;
+    free(text);
+    return -1;
   }
-  fprintf(out_html, "</h%d>\n", hash_count);
 
-  return 0;
+  if (fgetc(in_markdown) != '(') {
+    errno = EINVAL;
+    free(text);
+    return -1;
+  }
+
+  char *url = take_until(in_markdown, ")", 1);
+  if (url == NULL) {
+    free(text);
+    return -1;
+  }
+
+  if (fgetc(in_markdown) != ')') {
+    errno = EINVAL;
+    free(text);
+    free(url);
+    return -1;
+  }
+
+  fprintf(out_html, "<a href=\"%s\">%s</a>", url, text);
+
+  free(text);
+  free(url);
+
+  return 0; 
 }
 
 int convert_text(FILE *in_markdown, FILE *out_html) {
@@ -156,11 +214,37 @@ int convert_text(FILE *in_markdown, FILE *out_html) {
         fprintf(out_html, "</code>");
         in_code = false;
       }
+    } else if (c == '[') {
+      ungetc(c, in_markdown);
+      convert_link(in_markdown, out_html);
     } else {
       fputc(c, out_html);
     }
   }
   fprintf(out_html, "</p>\n");
+  return 0;
+}
+
+int convert_header(FILE *in_markdown, FILE *out_html) {
+  int hash_count = take_oneof(in_markdown, "#", 1);
+  if (hash_count < 0) {
+    return -1;
+  }
+
+  if (hash_count >= 6) {
+    for (int i = 0; i < hash_count; i++) {
+      if (fputc('#', out_html) == EOF) {
+        return -1;
+      }
+    }
+  }
+
+  take_oneof(in_markdown, " \t", 2);
+
+  fprintf(out_html, "<h%d class=\"highlight-purple\">", hash_count);
+  convert_text(in_markdown, out_html);
+  fprintf(out_html, "</h%d>\n", hash_count);
+
   return 0;
 }
 
@@ -188,6 +272,10 @@ int convert(FILE *in_markdown, FILE *out_html) {
       fgetc(in_markdown);
     } else if (c == '#') {
       if (convert_header(in_markdown, out_html)) {
+        return -1;
+      }
+    } else if (c == '[') {
+      if (convert_link(in_markdown, out_html)) {
         return -1;
       }
     } else {
@@ -242,6 +330,7 @@ int main(int argc, char **argv) {
   if (convert(in_markdown, out_html)) {
     printf("ERR: failed to map markdown to html.\n");
     printf("     %s\n", strerror(errno));
+    return 1;
   }
 
   if (argc >= 4) {
@@ -249,6 +338,7 @@ int main(int argc, char **argv) {
     if (pipe_from(footer_location, out_html)) {
       printf("ERR: failed to pipe footer '%s'.\n", argv[3]);
       printf("     %s\n", strerror(errno));
+      return 1;
     }
   }
 
