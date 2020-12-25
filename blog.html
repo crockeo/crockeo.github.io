@@ -4,12 +4,16 @@
   <head>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
     <link href="res/index.css" rel="stylesheet">
+    <link href="res/blog.css" rel="stylesheet">
 
     <title>@crockeo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js" integrity="sha512-L03kznCrNOfVxOUovR6ESfCz9Gfny7gihUX/huVbQB9zjODtYpxaVtIaAkpetoiyV2eqWbvxMH9fiSv5enX7bw==" crossorigin="anonymous"></script>
+    <script src="res/blog.js"></script>
   </head>
 
-  <body class="home-content">
+  <body>
     <div class="top-bar">
       <div class="top-elem">
         <div class="large highlight-purple">@crockeo</div>
@@ -18,8 +22,8 @@
       </div>
 
       <div class="top-elem">
-        <a class="logo-container" href="blog.html">
-          <img class="logo" src="res/blog.png" />
+        <a class="logo-container" href="index.html">
+          <img class="logo" src="res/home.png" />
         </a>
 
         <a class="logo-container" href="https://github.com/crockeo">
@@ -36,28 +40,10 @@
       </div>
     </div>
 
-    <div>
-      <div class="medium">Projects:</div>
-      <div class="small space"></div>
-      <div class="medium indent">
-        <div>
-          <div class="comment"># a collection on projects written in Common Lisp</div>
-          * <a href="https://github.com/crockeo/cl-projects">cl-projects</a>
-        </div>
-
-        <div class="small space"></div>
-
-        <div>
-          <div class="comment"># i don't pick sides</div>
-          * <a href="https://github.com/crockeo/.emacs.d">.emacs.d</a> and
-          <a href="https://github.com/crockeo/nvim">nvim</a>
-        </div>
+    <div id="blog-root">
+      <div class="blog-entry">
+        <h1>blog under construction, come back soon</h1>
       </div>
-    </div>
-
-    <div>
-      <!-- this bottom section is necessary to the projects section is in the
-           right place !-->
     </div>
   </body>
 </html>
