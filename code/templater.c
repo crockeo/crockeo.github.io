@@ -5,6 +5,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+// fputc except that it HTML-code escapes characters if applicable
+int fputc_esc(char c, FILE *out) {
+  const char *output_str;
+  if (c == '<') {
+    output_str = "&lt;";
+  } else if (c == '>') {
+    output_str = "&gt;";
+  } else {
+    return fputc(c, out);
+  }
+
+  return fprintf(out, "%s", output_str);
+}
+
 // consumes input from a file so long as the character consumed is one of the
 // characters in the parameter `options`. also contains an explicit length
 // parameter because depending on null-terminated strings is a one-way trip to
@@ -109,11 +123,13 @@ int pipe(FILE *in, FILE *out) {
     }
 
     if (errno != 0) {
+      printf("ERR: (pipe) failed to write\n");
       return -1;
     }
   }
 
   if (errno != 0) {
+    printf("ERR: (pipe) failed to read\n");
     return -1;
   }
 
@@ -134,22 +150,26 @@ int pipe_from(const char *src_file, FILE *out) {
 
 int convert_link(FILE *in_markdown, FILE *out_html) {
   if (fgetc(in_markdown) != '[') {
+    printf("ERR: (convert_link) link text must start with '['\n");
     errno = EINVAL;
     return -1;
   }
 
   char *text = take_until(in_markdown, "]", 1);
   if (text == NULL) {
+    printf("ERR: (convert_link) failed to read link text\n");
     return -1;
   }
 
   if (fgetc(in_markdown) != ']') {
+    printf("ERR: (convert_link) link text must end with ']'\n");
     errno = EINVAL;
     free(text);
     return -1;
   }
 
   if (fgetc(in_markdown) != '(') {
+    printf("ERR: (convert_link) link URL must start with '('\n");
     errno = EINVAL;
     free(text);
     return -1;
@@ -157,11 +177,13 @@ int convert_link(FILE *in_markdown, FILE *out_html) {
 
   char *url = take_until(in_markdown, ")", 1);
   if (url == NULL) {
+    printf("ERR: (convert_link) failed to read link URL\n");
     free(text);
     return -1;
   }
 
   if (fgetc(in_markdown) != ')') {
+    printf("ERR: (convert_link) link URL must end with ')'\n");
     errno = EINVAL;
     free(text);
     free(url);
@@ -173,7 +195,7 @@ int convert_link(FILE *in_markdown, FILE *out_html) {
   free(text);
   free(url);
 
-  return 0; 
+  return 0;
 }
 
 int convert_text(FILE *in_markdown, FILE *out_html) {
@@ -189,7 +211,7 @@ int convert_text(FILE *in_markdown, FILE *out_html) {
       if (newlines >= 1) {
         break;
       }
-      fputc(' ', out_html);
+      fputc_esc(' ', out_html);
     } else if (c == '_') {
       if (!in_italic) {
         fprintf(out_html, "<i>");
@@ -216,9 +238,11 @@ int convert_text(FILE *in_markdown, FILE *out_html) {
       }
     } else if (c == '[') {
       ungetc(c, in_markdown);
-      convert_link(in_markdown, out_html);
+      if (convert_link(in_markdown, out_html)) {
+        return -1;
+      }
     } else {
-      fputc(c, out_html);
+      fputc_esc(c, out_html);
     }
   }
   fprintf(out_html, "</p>\n");
@@ -233,7 +257,7 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
 
   if (hash_count >= 6) {
     for (int i = 0; i < hash_count; i++) {
-      if (fputc('#', out_html) == EOF) {
+      if (fputc_esc('#', out_html) == EOF) {
         return -1;
       }
     }
@@ -248,19 +272,88 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
   return 0;
 }
 
-int convert_ordered_list(FILE *in_markdown, FILE *out_html) {
-  return 0;
-}
+int convert_ordered_list(FILE *in_markdown, FILE *out_html) { return 0; }
 
-int convert_unordered_list(FILE *in_markdown, FILE *out_html) {
-  return 0;
-}
+int convert_unordered_list(FILE *in_markdown, FILE *out_html) { return 0; }
 
 int convert_code_block(FILE *in_markdown, FILE *out_html) {
+  int ticks = take_oneof(in_markdown, "`", 1);
+  if (ticks < 3) {
+    // if we don't get the 3 ticks, we just treat this block like text instead
+    ungetc('`', in_markdown);
+    return convert_text(in_markdown, out_html);
+  }
+
+  fprintf(out_html, "<pre><code>");
+
+  char c;
+  while ((c = fgetc(in_markdown)) != EOF && c != '`') {
+    fputc_esc(c, out_html);
+  }
+  if (c == EOF && errno != 0) {
+    // TODO: print error
+    return -1;
+  }
+  take_oneof(in_markdown, "`", 1);
+
+  fprintf(out_html, "</code></pre>");
+
   return 0;
 }
 
 int convert_image(FILE *in_markdown, FILE *out_html) {
+  if (fgetc(in_markdown) != '!') {
+    printf("ERR: (convert_image) image must start '!'\n");
+    errno = EINVAL;
+    return -1;
+  }
+
+  if (fgetc(in_markdown) != '[') {
+    printf("ERR: (convert_image) image alt must start with '['\n");
+    errno = EINVAL;
+    return -1;
+  }
+
+  char *alt = take_until(in_markdown, "]", 1);
+  if (alt == NULL) {
+    printf("ERR: (convert_image) failed to read image alt\n");
+    return -1;
+  }
+
+  if (fgetc(in_markdown) != ']') {
+    printf("ERR: (convert_image) image alt must end with ']'\n");
+    errno = EINVAL;
+    free(alt);
+    return -1;
+  }
+
+  if (fgetc(in_markdown) != '(') {
+    printf("ERR: (convert_image) image URL must start with '('\n");
+    errno = EINVAL;
+    free(alt);
+    return -1;
+  }
+
+  char *url = take_until(in_markdown, ")", 1);
+  if (url == NULL) {
+    printf("ERR: (convert_image) failed to read image URL\n");
+    free(alt);
+    return -1;
+  }
+
+  if (fgetc(in_markdown) != ')') {
+    printf("ERR: (convert_image) image URL must end with ')'\n");
+    errno = EINVAL;
+    free(alt);
+    free(url);
+    return -1;
+  }
+
+  fprintf(out_html, "<img src=\"%s\" alt=\"%s\" />", url, alt);
+
+  free(alt);
+  free(url);
+
   return 0;
 }
 
@@ -276,6 +369,16 @@ int convert(FILE *in_markdown, FILE *out_html) {
       }
     } else if (c == '[') {
       if (convert_link(in_markdown, out_html)) {
+        return -1;
+      }
+    } else if (c == '`') {
+      // TODO: this isn't a great signal; we'd prefer to peek at 3 consecutive
+      // characters
+      if (convert_code_block(in_markdown, out_html)) {
+        return -1;
+      }
+    } else if (c == '!') {
+      if (convert_image(in_markdown, out_html)) {
         return -1;
       }
     } else {

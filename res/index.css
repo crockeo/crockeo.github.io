@@ -42,11 +42,22 @@ body {
     width: 50%;
 }
 
+pre {
+    background: var(--hawaii-background);
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    padding: 0.15rem 0.5rem;
+}
+
 code {
     background: var(--hawaii-background);
     border-radius: 0.3rem;
     font-size: 1rem;
     padding: 0.15rem 0.5rem;
+}
+
+img {
+    max-width: 100%;
 }
 
 ::selection {

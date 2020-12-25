@@ -34,7 +34,7 @@ I'm not the biggest fan of [Lua](https://www.lua.org/) but it does it's job: it'
 
 Named `pj`:
 
-```bash
+```
 $ pj
 error: The following required arguments were not provided:
     <sentinel-pattern>
