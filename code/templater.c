@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -91,8 +92,6 @@ int pipe_from(const char *src_file, FILE *out) {
 
 // each of the following markdown functions expect to be called
 // at the beginning of a line unless otherwise specified.
-//
-// they will attempt to end the
 int convert_header(FILE *in_markdown, FILE *out_html) {
   int hash_count = take_oneof(in_markdown, "#", 1);
   if (hash_count < 0) {
@@ -119,11 +118,42 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
   return 0;
 }
 
+int convert_text(FILE *in_markdown, FILE *out_html) {
+  // TODO: process text styling
+  fprintf(out_html, "<p>");
+  char c;
+  while ((c = fgetc(in_markdown)) != EOF) {
+    if (c == '\r' || c == '\n') {
+      int newlines = 1;
+      while ((c = fgetc(in_markdown)) && c == '\r' || c == '\n') {
+        newlines++;
+      }
+      if (newlines >= 2) {
+        break;
+      }
+      fputc(' ', out_html);
+    } else {
+      fputc(c, out_html);
+    }
+  }
+  fprintf(out_html, "</p>\n");
+  return 0;
+}
+
 int convert(FILE *in_markdown, FILE *out_html) {
   char c;
   while ((c = peek(in_markdown)) != EOF) {
-    if (c == '#' && convert_header(in_markdown, out_html)) {
-      return -1;
+    if (isspace(c)) {
+      // consume whitespace between lines
+      fgetc(in_markdown);
+    } else if (c == '#') {
+      if (convert_header(in_markdown, out_html)) {
+        return -1;
+      }
+    } else {
+      if (convert_text(in_markdown, out_html)) {
+        return -1;
+      }
     }
   }
   return 0;
