@@ -8,6 +8,8 @@ the world. here are the reasons why:
 1. this is a good way to say them
 1. asldkja
 
+also, here is some styled text: _italics_ *bold*
+
 ## ok here are more things
 
 ```
