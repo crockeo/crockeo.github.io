@@ -113,25 +113,40 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
   while ((c = fgetc(in_markdown)) != '\n' && c != EOF) {
     fputc(c, out_html);
   }
-  fprintf(out_html, "<h%d>\n", hash_count);
+  fprintf(out_html, "</h%d>\n", hash_count);
 
   return 0;
 }
 
 int convert_text(FILE *in_markdown, FILE *out_html) {
-  // TODO: process text styling
+  bool in_italic = false;
+  bool in_bold = false;
+
   fprintf(out_html, "<p>");
   char c;
   while ((c = fgetc(in_markdown)) != EOF) {
     if (c == '\r' || c == '\n') {
-      int newlines = 1;
-      while ((c = fgetc(in_markdown)) && c == '\r' || c == '\n') {
-        newlines++;
-      }
-      if (newlines >= 2) {
+      int newlines = take_oneof(in_markdown, "\r\n", 2);
+      if (newlines >= 1) {
         break;
       }
       fputc(' ', out_html);
+    } else if (c == '_') {
+      if (!in_italic) {
+        fprintf(out_html, "<i>");
+        in_italic = true;
+      } else {
+        fprintf(out_html, "</i>");
+        in_italic = false;
+      }
+    } else if (c == '*') {
+      if (!in_bold) {
+        fprintf(out_html, "<b>");
+        in_bold = true;
+      } else {
+        fprintf(out_html, "</b>");
+        in_bold = false;
+      }
     } else {
       fputc(c, out_html);
     }
