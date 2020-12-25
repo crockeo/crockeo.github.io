@@ -1,9 +1,50 @@
 #include <errno.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// pipe, self-descriptively, pipes the contents from an input file to an output file.
+// consumes input from a file so long as the character consumed is one of the
+// characters in the parameter `options`. also contains an explicit length
+// parameter because depending on null-terminated strings is a one-way trip to
+// memory unsafety-ville.
+int take_oneof(FILE *in, const char *options, size_t len) {
+  int count = 0;
+  char c;
+  while ((c = fgetc(in)) != EOF) {
+    bool found_option = false;
+    for (size_t i = 0; i < len; i++) {
+      if (c == options[i]) {
+        found_option = true;
+        count += 1;
+        break;
+      }
+    }
+
+    if (!found_option) {
+      ungetc(c, in);
+      break;
+    }
+  }
+
+  if (errno != 0) {
+    return -1;
+  }
+
+  return count;
+}
+
+// peeks at the next value in the provided file.
+int peek(FILE *in) {
+  int result = fgetc(in);
+  if (result != EOF) {
+    ungetc(result, in);
+  }
+  return result;
+}
+
+// pipe, self-descriptively, pipes the contents from an input file to an output
+// file.
 //
 // Returns:
 //   If the operation succeeds, pipe returns 0.
@@ -48,16 +89,52 @@ int pipe_from(const char *src_file, FILE *out) {
   return ret;
 }
 
+// each of the following markdown functions expect to be called
+// at the beginning of a line unless otherwise specified.
+//
+// they will attempt to end the
+int convert_header(FILE *in_markdown, FILE *out_html) {
+  int hash_count = take_oneof(in_markdown, "#", 1);
+  if (hash_count < 0) {
+    return -1;
+  }
+
+  if (hash_count >= 6) {
+    for (int i = 0; i < hash_count; i++) {
+      if (fputc('#', out_html) == EOF) {
+        return -1;
+      }
+    }
+  }
+
+  take_oneof(in_markdown, " \t", 2);
+
+  fprintf(out_html, "<h%d>", hash_count);
+  char c;
+  while ((c = fgetc(in_markdown)) != '\n' && c != EOF) {
+    fputc(c, out_html);
+  }
+  fprintf(out_html, "<h%d>\n", hash_count);
+
+  return 0;
+}
+
 int convert(FILE *in_markdown, FILE *out_html) {
-  // TODO: ensure we set errno when we return a non-zero result
-  errno = ENOSYS;
-  return -1;
+  char c;
+  while ((c = peek(in_markdown)) != EOF) {
+    if (c == '#' && convert_header(in_markdown, out_html)) {
+      return -1;
+    }
+  }
+  return 0;
 }
 
 int main(int argc, char **argv) {
   if (argc < 2 || argc > 5) {
     printf("correct usage:\n");
-    printf("  %s <path/to/markdown.md> [path/to/header.html] [path/to/footer.html] [path/to/output.html]\n", argv[0]);
+    printf("  %s <path/to/markdown.md> [path/to/header.html] "
+           "[path/to/footer.html] [path/to/output.html]\n",
+           argv[0]);
     printf("\n");
     printf("  if the output path is not provided, then this program\n");
     printf("  print the results straight to stdout.\n");
