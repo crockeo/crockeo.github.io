@@ -69,7 +69,7 @@ I found [denite.nvim](https://github.com/Shougo/denite.nvim) which provides most
 
 I set up a [pj source](https://github.com/crockeo/nvim/blob/main/rplugin/python3/denite/source/pj.py), set up [a keybind](https://github.com/crockeo/nvim/blob/6e19018c9a4d015aaed3dab40b8ce7efee59a60f/lua/plug_config/denite.lua#L36) (don't mind the commented-out nonsense), and then we were off to the races. It looks something like this:
 
-![](res/blogs/break-projects/denite-example.png)
+![](/res/blogs/break-projects/denite-example.png)
 
 ## [I'm making a lisp](https://github.com/crockeo/lisp-rs)
 

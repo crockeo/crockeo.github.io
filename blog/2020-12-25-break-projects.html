@@ -79,14 +79,14 @@ For more information try --help
 <p>The latter has a higher cognitive load and takes more time to perform. I bias towards optimizing out tedious work so I decided to recreate my projectile workflow.</p>
 <p>I found <a href="https://github.com/Shougo/denite.nvim">denite.nvim</a> which provides most of projectile's behavior out-of-the-box(-ish). Denite has a concept of "sources" which populate an in-editor option picker which can be described as Python subclasses of denite's <code>source.Base</code> class. For example, denite describes a <a href="https://github.com/Shougo/denite.nvim/blob/12a9b5456f5a4600afeb0ba284ce1098bd35e501/rplugin/python3/denite/source/grep.py">grep source</a> for finding file contents.</p>
 <p>I set up a <a href="https://github.com/crockeo/nvim/blob/main/rplugin/python3/denite/source/pj.py">pj source</a>, set up <a href="https://github.com/crockeo/nvim/blob/6e19018c9a4d015aaed3dab40b8ce7efee59a60f/lua/plug_config/denite.lua#L36">a keybind</a> (don't mind the commented-out nonsense), and then we were off to the races. It looks something like this:</p>
-<img src="res/blogs/break-projects/denite-example.png" alt="" /><h2 class="highlight-purple"><p><a href="https://github.com/crockeo/lisp-rs">I'm making a lisp</a></p>
+<img src="/res/blogs/break-projects/denite-example.png" alt="" /><h2 class="highlight-purple"><p><a href="https://github.com/crockeo/lisp-rs">I'm making a lisp</a></p>
 </h2>
 <p>I know it's a little absurd ot say "I'm not really on my Lisp kick anymore" only to follow it up with "I'm making a Lisp," but I promise I can make it consistent. Reading and writing Lisp can be a pain, but writing <i>a</i> Lisp is great fun.</p>
 <p>There's not really much to say, there's nothing special about it and it's very WIP, but I really enjoy it. Rust is a great language to work with on this kind of thing because its abstractions let it mimic functional programming very well.</p>
 <h2 class="highlight-purple"><p><a href="https://github.com/crockeo/crockeo.github.io">I made this blog</a></p>
 </h2>
 <p>That doesn't seem so impressive, except for the fact that I'm apparently a masshocist. I didn't like all of the feature-bloated static site generators out there on the web when all I wanted was to turn markdown into HTML with a uniform header and footer.</p>
-<p>I also wanted the templater to be super-portable. Like <i>super</i> portable. So I wrote it in ANSI C99: <a href="https://github.com/crockeo/crockeo.github.io/blob/master/code/templater.c">templater.c</a>.</p>
+<p>I also wanted the templater to be super-portable. Like <i>super</i> portable. So I wrote it in ANSI C99: <a href="https://github.com/crockeo/crockeo.github.io/blob/master/code/templater.c">templater.c</a>. </p>
     </div>
   </body>
 </html>
