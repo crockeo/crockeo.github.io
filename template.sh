@@ -2,6 +2,7 @@
 
 set -e
 
+# ensuring we have access to the templater
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 templater="$DIR/code/templater"
 if [ ! -f "$templater" ]; then
@@ -11,6 +12,7 @@ if [ ! -f "$templater" ]; then
     cd "$original_dir"
 fi
 
+# templating each of the blogs
 posts=$(ls -d $DIR/blog/md/*)
 for post in $posts; do
     out_name=$(echo $(basename $post) | sed 's/md/html/')
@@ -18,3 +20,16 @@ for post in $posts; do
 
     $templater "$post" "$DIR/code/header.html" "$DIR/code/footer.html" "$out_file"
 done
+
+cat "$DIR/code/header.html" > blog.html
+cat << EndOfFile >> blog.html
+<h1>blog posts</h1>
+EndOfFile
+for post in $posts; do
+    out_name=$(echo $(basename $post) | sed 's/md/html/')
+
+    cat << EndOfFile >> blog.html
+<h2><a href="/blog/$out_name">$out_name</a></h2>
+EndOfFile
+done
+cat "$DIR/code/footer.html" >> blog.html
