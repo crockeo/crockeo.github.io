@@ -28,8 +28,12 @@ EndOfFile
 for post in $posts; do
     out_name=$(echo $(basename $post) | sed 's/md/html/')
 
+    day=$(echo $out_name | sed -E 's/([0-9]+-[0-9]+-[0-9]+)-.+/\1/')
+    name=$(echo $out_name | sed -E 's/[0-9]+-[0-9]+-[0-9]+-//' | sed -E 's/\.html//' | sed -E 's/-/ /g')
+
+    nice_name="$day $name"
     cat << EndOfFile >> blog.html
-<h2><a href="/blog/$out_name">$out_name</a></h2>
+<h2><a href="/blog/$out_name">$nice_name</a></h2>
 EndOfFile
 done
 cat "$DIR/code/footer.html" >> blog.html
