@@ -203,7 +203,6 @@ int convert_text(FILE *in_markdown, FILE *out_html, int required_newlines) {
   bool in_bold = false;
   bool in_code = false;
 
-  fprintf(out_html, "<p>");
   char c;
   while ((c = fgetc(in_markdown)) != EOF) {
     if (c == '\r' || c == '\n') {
@@ -245,7 +244,16 @@ int convert_text(FILE *in_markdown, FILE *out_html, int required_newlines) {
       fputc_esc(c, out_html);
     }
   }
+  return 0;
+}
+
+int convert_paragraph(FILE *in_markdown, FILE *out_html) {
+  fprintf(out_html, "<p>");
+  if (convert_text(in_markdown, out_html, 2)) {
+    return -1;
+  }
   fprintf(out_html, "</p>\n");
+
   return 0;
 }
 
@@ -266,22 +274,7 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
   take_oneof(in_markdown, " \t", 2);
 
   fprintf(out_html, "<h%d class=\"highlight-purple\">", hash_count);
-
-  char c = peek(in_markdown);
-  if (c == '[') {
-    convert_link(in_markdown, out_html);
-  } else {
-    while ((c = fgetc(in_markdown)) != EOF && c != '\n' && c != '\r') {
-      fputc(c, out_html);
-    }
-
-    if (errno != 0) {
-      return -1;
-    }
-
-    take_oneof(in_markdown, "\n\r", 2);
-  }
-
+  convert_text(in_markdown, out_html, 1);
   fprintf(out_html, "</h%d>\n", hash_count);
 
   return 0;
@@ -291,16 +284,16 @@ int convert_ordered_list(FILE *in_markdown, FILE *out_html) { return 0; }
 
 int convert_unordered_list(FILE *in_markdown, FILE *out_html) {
   char c;
-  fprintf(out_html, "<ul>");
+  fprintf(out_html, "<ul>\n");
   while ((c = peek(in_markdown)) == '*') {
     fgetc(in_markdown);
 
     fprintf(out_html, "<li>");
     take_oneof(in_markdown, " \t", 2);
     convert_text(in_markdown, out_html, 1);
-    fprintf(out_html, "</li>");
+    fprintf(out_html, "</li>\n");
   }
-  fprintf(out_html, "</ul>");
+  fprintf(out_html, "</ul>\n");
 
   return 0;
 }
@@ -310,7 +303,7 @@ int convert_code_block(FILE *in_markdown, FILE *out_html) {
   if (ticks < 3) {
     // if we don't get the 3 ticks, we just treat this block like text instead
     ungetc('`', in_markdown);
-    return convert_text(in_markdown, out_html, 2);
+    return convert_paragraph(in_markdown, out_html);
   }
 
   fprintf(out_html, "<pre><code>");
@@ -415,7 +408,7 @@ int convert(FILE *in_markdown, FILE *out_html) {
         return -1;
       }
     } else {
-      if (convert_text(in_markdown, out_html, 2)) {
+      if (convert_paragraph(in_markdown, out_html)) {
         return -1;
       }
     }
