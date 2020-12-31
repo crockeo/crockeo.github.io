@@ -23,7 +23,8 @@ done
 
 cat "$DIR/code/header.html" > blog.html
 cat << EndOfFile >> blog.html
-<h1>blog posts</h1>
+<h2>blog posts</h2>
+<ul>
 EndOfFile
 for post in $posts; do
     out_name=$(echo $(basename $post) | sed 's/md/html/')
@@ -31,7 +32,11 @@ for post in $posts; do
     day=$(echo $out_name | sed -E 's/([0-9]+-[0-9]+-[0-9]+)-.+/\1/')
     name=$(echo $out_name | sed -E 's/[0-9]+-[0-9]+-[0-9]+-//' | sed -E 's/\.html//' | sed -E 's/-/ /g')
     cat << EndOfFile >> blog.html
-<h3>$day <a href="/blog/$out_name">$name</a></h3>
+<li>$day <a href="/blog/$out_name">$name</a></li>
 EndOfFile
 done
+cat << EndOfFile >> blog.html
+</ul>
+</h2>
+EndOfFile
 cat "$DIR/code/footer.html" >> blog.html

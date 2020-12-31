@@ -4,7 +4,7 @@ Written: 2020-12-25
 
 So it's the holidays and it turns out I like programming a little to much. I've been working on some things during my time off from work, and I want to give a little spotlight to each of them.
 
-## [I switched to neovim](https://github.com/crockeo/nvim)
+## I switched to neovim ([link](https://github.com/crockeo/nvim))
 
 In the beginning of 2020, back before we knew what coronavirus was, I went back to the [Recurse Center](https://recurse.com) for a "half batch"&mdash;a 6-week (instead of the normal 12-week) programming retreat where I could do, more or less, anything I wanted. I met another recurser whose online moniker is [neeasade](https://neeasade.net/). If you click that link (and you should), you'll see they're a [ricer](https://www.reddit.com/r/unixporn/comments/3iy3wd/stupid_question_what_is_ricing/) and an [Emacs](https://emacs.sexy/)-er. To make a long story short, neeasade [brought me into the fold](https://github.com/crockeo/.emacs.d).
 
@@ -30,7 +30,7 @@ Emacs Lisp, especially with the introduction of [lexical binding](https://www.gn
 
 I'm not the biggest fan of [Lua](https://www.lua.org/) but it does it's job: it's an existing programming language and it's readable. My Neovim config is largely Lua (77.1% at time of writing). That percentage will only grow as I get less lazy and migrate Vimscript I was too lazy to before.
 
-## [I made a directory finder](https://github.com/crockeo/pj)
+## I made a directory finder ([link](https://github.com/crockeo/pj))
 
 Named `pj`:
 
@@ -71,14 +71,14 @@ I set up a [pj source](https://github.com/crockeo/nvim/blob/main/rplugin/python3
 
 ![](/res/blogs/break-projects/denite-example.png)
 
-## [I'm making a lisp](https://github.com/crockeo/lisp-rs)
+## I made (part of) a lisp ([link](https://github.com/crockeo/lisp-rs))
 
 I know it's a little absurd to say "I'm not really on my Lisp kick anymore" only to follow it up with "I'm making a Lisp," but I promise I can make it consistent. Reading and writing Lisp can be a pain, but writing _a_ Lisp is great fun.
 
 There's not really much to say, there's nothing special about it and it's very WIP, but I really enjoy it. Rust is a great language to work with on this kind of thing because its abstractions let it mimic functional programming very well.
 
-## [I made this blog](https://github.com/crockeo/crockeo.github.io)
+## I made this blog
 
-That doesn't seem so impressive, except for the fact that I'm apparently a masshocist. I didn't like all of the feature-bloated static site generators out there on the web when all I wanted was to turn markdown into HTML with a uniform header and footer.
+That doesn't seem so impressive, except for the fact that I'm apparently a masochist. I didn't like all of the feature-bloated static site generators out there on the web when all I wanted was to turn markdown into HTML with a uniform header and footer.
 
 I also wanted the templater to be super-portable. Like _super_ portable. So I wrote it in ANSI C99: [templater.c](https://github.com/crockeo/crockeo.github.io/blob/master/code/templater.c).

@@ -37,23 +37,23 @@
     </div>
 
     <div class="blog-entry">
-<h1 class="highlight-purple">break projects</h1>
+<h1>break projects</h1>
 <p>Written: 2020-12-25</p>
 <p>So it's the holidays and it turns out I like programming a little to much. I've been working on some things during my time off from work, and I want to give a little spotlight to each of them.</p>
-<h2 class="highlight-purple"><a href="https://github.com/crockeo/nvim">I switched to neovim</a></h2>
+<h2>I switched to neovim (<a href="https://github.com/crockeo/nvim">link</a>)</h2>
 <p>In the beginning of 2020, back before we knew what coronavirus was, I went back to the <a href="https://recurse.com">Recurse Center</a> for a "half batch"&mdash;a 6-week (instead of the normal 12-week) programming retreat where I could do, more or less, anything I wanted. I met another recurser whose online moniker is <a href="https://neeasade.net/">neeasade</a>. If you click that link (and you should), you'll see they're a <a href="https://www.reddit.com/r/unixporn/comments/3iy3wd/stupid_question_what_is_ricing/">ricer</a> and an <a href="https://emacs.sexy/">Emacs</a>-er. To make a long story short, neeasade <a href="https://github.com/crockeo/.emacs.d">brought me into the fold</a>.</p>
 <p>Now almost a full year later, I switched from Emacs to <a href="https://neovim.io/">Neovim</a>. This shift was precipitated by the fact that my Emacs kept on freezing. The normal advice of sending a <code>SIGUSR2</code> to enter the debugger didn't end up working and so I turned to <code>lldb</code> which showed that Emacs was waiting for user input, super helpful. I ended up tracking down the issue to some combination of <a href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a> and <a href="https://clangd.llvm.org/">clangd</a> but, frankly, could not be bothered to upstream a fix.</p>
 <p>It also just so happens that I believe in Neovim more than I do Emacs. That's a bit of a charged statement, so let me explain a little bit.</p>
-<h3 class="highlight-purple">Unix Process Model</h3>
+<h3>Unix Process Model</h3>
 <p>I like the Unix model of compositional processes. Emacs users tend to be LISP programmers and LISP programmers tend to like long-lived monolithic LISP machines. In turn, Emacs offers a way to encapsulate a long-lived monolithic LISP machine into your friendly little Unix system. The common wisdom with Emacas is that it can, and eventually should, subsume most tasks you perform on your computer.</p>
 <p>I don't really like that. I want a bunch of tools, each of which with its own, well-scoped job, to compose into a whole more powerful than their parts. <a href="https://www.vim.org/">Vim</a> already offers that, to some degree, but Neovim takes it to another level with its <a href="https://msgpack.org/">MessagePack</a> socket-based API. Processes totally external to Neovim can interact with almost every single part of the editor. This interaction very well may be the killer feature of Neovim: is is naturally multi-process and polylingual, allowing people to use whatever tools are best suited for a particular job.</p>
-<h3 class="highlight-purple">Threads</h3>
+<h3>Threads</h3>
 <p>This is a short, but sweet, one: Neovim is multithreaded. Vim is not, Emacs is not. Modern computers get much of their computing power from the existence of multiple cores&mdash;it's not like editors really <i>need</i> that power 99% of the time, but if I'm going to bet on an editor I'd like it to be an editor that's well-positioned for the future of computers.</p>
-<h3 class="highlight-purple">I Hate Vimscript (and Emacs Lisp is O.K.)</h3>
+<h3>I Hate Vimscript (and Emacs Lisp is O.K.)</h3>
 <p>I really, really do not enjoy working in Vimscript. It's not really a knock against the language itself, so much as a knock against having to learn a new programming language to interact with my editor. I'd much rather use an editor I can configure with an existing programming language, even if it's not my favorite.</p>
 <p>Emacs Lisp, especially with the introduction of <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html">lexical binding</a> back in Emacs 23, is pretty much Just Another LISP-2™. As someone who was <a href="https://github.com/crockeo/cl-projects">briefly into Common Lisp</a> this wasn't so bad. I'm not really on my Lisp kick anymore for Reasons™ (see: it's inscrutable) and so Emacs Lisp isn't really doing it for me anymore.</p>
 <p>I'm not the biggest fan of <a href="https://www.lua.org/">Lua</a> but it does it's job: it's an existing programming language and it's readable. My Neovim config is largely Lua (77.1% at time of writing). That percentage will only grow as I get less lazy and migrate Vimscript I was too lazy to before.</p>
-<h2 class="highlight-purple"><a href="https://github.com/crockeo/pj">I made a directory finder</a></h2>
+<h2>I made a directory finder (<a href="https://github.com/crockeo/pj">link</a>)</h2>
 <p>Named <code>pj</code>:</p>
 <pre><code>
 $ pj
@@ -83,11 +83,11 @@ For more information try --help
 <p>The latter has a higher cognitive load and takes more time to perform. I bias towards optimizing out tedious work so I decided to recreate my projectile workflow.</p>
 <p>I found <a href="https://github.com/Shougo/denite.nvim">denite.nvim</a> which provides most of projectile's behavior out-of-the-box(-ish). Denite has a concept of "sources" which populate an in-editor option picker which can be described as Python subclasses of denite's <code>source.Base</code> class. For example, denite describes a <a href="https://github.com/Shougo/denite.nvim/blob/12a9b5456f5a4600afeb0ba284ce1098bd35e501/rplugin/python3/denite/source/grep.py">grep source</a> for finding file contents.</p>
 <p>I set up a <a href="https://github.com/crockeo/nvim/blob/main/rplugin/python3/denite/source/pj.py">pj source</a>, set up <a href="https://github.com/crockeo/nvim/blob/6e19018c9a4d015aaed3dab40b8ce7efee59a60f/lua/plug_config/denite.lua#L36">a keybind</a> (don't mind the commented-out nonsense), and then we were off to the races. It looks something like this:</p>
-<img src="/res/blogs/break-projects/denite-example.png" alt="" /><h2 class="highlight-purple"><a href="https://github.com/crockeo/lisp-rs">I'm making a lisp</a></h2>
+<img src="/res/blogs/break-projects/denite-example.png" alt="" /><h2>I made (part of) a lisp (<a href="https://github.com/crockeo/lisp-rs">link</a>)</h2>
 <p>I know it's a little absurd to say "I'm not really on my Lisp kick anymore" only to follow it up with "I'm making a Lisp," but I promise I can make it consistent. Reading and writing Lisp can be a pain, but writing <i>a</i> Lisp is great fun.</p>
 <p>There's not really much to say, there's nothing special about it and it's very WIP, but I really enjoy it. Rust is a great language to work with on this kind of thing because its abstractions let it mimic functional programming very well.</p>
-<h2 class="highlight-purple"><a href="https://github.com/crockeo/crockeo.github.io">I made this blog</a></h2>
-<p>That doesn't seem so impressive, except for the fact that I'm apparently a masshocist. I didn't like all of the feature-bloated static site generators out there on the web when all I wanted was to turn markdown into HTML with a uniform header and footer.</p>
+<h2>I made this blog</h2>
+<p>That doesn't seem so impressive, except for the fact that I'm apparently a masochist. I didn't like all of the feature-bloated static site generators out there on the web when all I wanted was to turn markdown into HTML with a uniform header and footer.</p>
 <p>I also wanted the templater to be super-portable. Like <i>super</i> portable. So I wrote it in ANSI C99: <a href="https://github.com/crockeo/crockeo.github.io/blob/master/code/templater.c">templater.c</a>. </p>
     </div>
   </body>

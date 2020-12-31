@@ -273,7 +273,7 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
 
   take_oneof(in_markdown, " \t", 2);
 
-  fprintf(out_html, "<h%d class=\"highlight-purple\">", hash_count);
+  fprintf(out_html, "<h%d>", hash_count);
   convert_text(in_markdown, out_html, 1);
   fprintf(out_html, "</h%d>\n", hash_count);
 
