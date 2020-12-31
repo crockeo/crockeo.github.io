@@ -73,7 +73,7 @@ I set up a [pj source](https://github.com/crockeo/nvim/blob/main/rplugin/python3
 
 ## [I'm making a lisp](https://github.com/crockeo/lisp-rs)
 
-I know it's a little absurd ot say "I'm not really on my Lisp kick anymore" only to follow it up with "I'm making a Lisp," but I promise I can make it consistent. Reading and writing Lisp can be a pain, but writing _a_ Lisp is great fun.
+I know it's a little absurd to say "I'm not really on my Lisp kick anymore" only to follow it up with "I'm making a Lisp," but I promise I can make it consistent. Reading and writing Lisp can be a pain, but writing _a_ Lisp is great fun.
 
 There's not really much to say, there's nothing special about it and it's very WIP, but I really enjoy it. Rust is a great language to work with on this kind of thing because its abstractions let it mimic functional programming very well.
 

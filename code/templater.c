@@ -266,7 +266,22 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
   take_oneof(in_markdown, " \t", 2);
 
   fprintf(out_html, "<h%d class=\"highlight-purple\">", hash_count);
-  convert_text(in_markdown, out_html);
+
+  char c = peek(in_markdown);
+  if (c == '[') {
+    convert_link(in_markdown, out_html);
+  } else {
+    while ((c = fgetc(in_markdown)) != EOF && c != '\n' && c != '\r') {
+      fputc(c, out_html);
+    }
+
+    if (errno != 0) {
+      return -1;
+    }
+
+    take_oneof(in_markdown, "\n\r", 2);
+  }
+
   fprintf(out_html, "</h%d>\n", hash_count);
 
   return 0;
