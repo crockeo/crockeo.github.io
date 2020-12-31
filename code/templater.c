@@ -198,7 +198,7 @@ int convert_link(FILE *in_markdown, FILE *out_html) {
   return 0;
 }
 
-int convert_text(FILE *in_markdown, FILE *out_html) {
+int convert_text(FILE *in_markdown, FILE *out_html, int required_newlines) {
   bool in_italic = false;
   bool in_bold = false;
   bool in_code = false;
@@ -208,7 +208,7 @@ int convert_text(FILE *in_markdown, FILE *out_html) {
   while ((c = fgetc(in_markdown)) != EOF) {
     if (c == '\r' || c == '\n') {
       int newlines = take_oneof(in_markdown, "\r\n", 2);
-      if (newlines >= 1) {
+      if (newlines >= required_newlines - 1) {
         break;
       }
       fputc_esc(' ', out_html);
@@ -289,14 +289,28 @@ int convert_header(FILE *in_markdown, FILE *out_html) {
 
 int convert_ordered_list(FILE *in_markdown, FILE *out_html) { return 0; }
 
-int convert_unordered_list(FILE *in_markdown, FILE *out_html) { return 0; }
+int convert_unordered_list(FILE *in_markdown, FILE *out_html) {
+  char c;
+  fprintf(out_html, "<ul>");
+  while ((c = peek(in_markdown)) == '*') {
+    fgetc(in_markdown);
+
+    fprintf(out_html, "<li>");
+    take_oneof(in_markdown, " \t", 2);
+    convert_text(in_markdown, out_html, 1);
+    fprintf(out_html, "</li>");
+  }
+  fprintf(out_html, "</ul>");
+
+  return 0;
+}
 
 int convert_code_block(FILE *in_markdown, FILE *out_html) {
   int ticks = take_oneof(in_markdown, "`", 1);
   if (ticks < 3) {
     // if we don't get the 3 ticks, we just treat this block like text instead
     ungetc('`', in_markdown);
-    return convert_text(in_markdown, out_html);
+    return convert_text(in_markdown, out_html, 2);
   }
 
   fprintf(out_html, "<pre><code>");
@@ -396,8 +410,12 @@ int convert(FILE *in_markdown, FILE *out_html) {
       if (convert_image(in_markdown, out_html)) {
         return -1;
       }
+    } else if (c == '*') {
+      if (convert_unordered_list(in_markdown, out_html)) {
+        return -1;
+      }
     } else {
-      if (convert_text(in_markdown, out_html)) {
+      if (convert_text(in_markdown, out_html, 2)) {
         return -1;
       }
     }

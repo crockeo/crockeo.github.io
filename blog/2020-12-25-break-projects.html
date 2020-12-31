@@ -66,11 +66,17 @@ USAGE:
 For more information try --help
 </code></pre><p>I missed one thing during the transition from Emacs to Neovim: <a href="https://github.com/bbatsov/projectile">projectile</a>. Because an individual Emacs process was long-lived, I needed to navigate between projects during the course of a normal work day. I didn't quite have that problem anymore in Neovim, since I could just open a new window in <a href="https://github.com/tmux/tmux">tmux</a> and move to a new project. However there was one, very specific use-case I was missing: cross-referencing files across projects.</p>
 <p>Imagine you work at a <a href="https://www.lyft.com/">company that uses microservices</a> and you're making an RPC from service A to service B. The behavior and API of the RPC is "self-documenting" (i.e. not documented), and so you have to cross-reference code in multiple places:</p>
-<p><b> The code you're writing in service A </b> The <a href="https://en.wikipedia.org/wiki/Interface_description_language">interface definition</a> repo your company maintains <b> The code that will be executed in service B</p>
-<p>In Emacs my workflow for this was to quite literally just press <code>C-p-p</code> to bring up projectile's "change project" menu. I'd type in the name of the project and then the name of the file and I'm done.</p>
+<ul><li><p>The code you're writing in service A</p>
+</li><li><p>The <a href="https://en.wikipedia.org/wiki/Interface_description_language">interface definition</a> repo your company maintains</p>
+</li><li><p>The code that will be executed in service B</p>
+</li></ul><p>In Emacs my workflow for this was to quite literally just press <code>C-p-p</code> to bring up projectile's "change project" menu. I'd type in the name of the project and then the name of the file and I'm done.</p>
 <p>In my Neovim workflow I:</p>
-<p><b> Open a new tmux pane </b> <code>cd</code> to <code>~/src/&lt;repo name&gt;</code> <b> Open up <a href="https://github.com/preservim/nerdtree">nerdtree</a> </b> Remember where the file is in the tree structure (varies project-to-project) & navigate to it <b> Open the file</p>
-<p>The latter has a higher cognitive load and takes more time to perform. I bias towards optimizing out tedious work so I decided to recreate my projectile workflow.</p>
+<ul><li><p>Open a new tmux pane</p>
+</li><li><p><code>cd</code> to <code>~/src/&lt;repo name&gt;</code></p>
+</li><li><p>Open up <a href="https://github.com/preservim/nerdtree">nerdtree</a></p>
+</li><li><p>Remember where the file is in the tree structure (varies project-to-project) & navigate to it</p>
+</li><li><p>Open the file</p>
+</li></ul><p>The latter has a higher cognitive load and takes more time to perform. I bias towards optimizing out tedious work so I decided to recreate my projectile workflow.</p>
 <p>I found <a href="https://github.com/Shougo/denite.nvim">denite.nvim</a> which provides most of projectile's behavior out-of-the-box(-ish). Denite has a concept of "sources" which populate an in-editor option picker which can be described as Python subclasses of denite's <code>source.Base</code> class. For example, denite describes a <a href="https://github.com/Shougo/denite.nvim/blob/12a9b5456f5a4600afeb0ba284ce1098bd35e501/rplugin/python3/denite/source/grep.py">grep source</a> for finding file contents.</p>
 <p>I set up a <a href="https://github.com/crockeo/nvim/blob/main/rplugin/python3/denite/source/pj.py">pj source</a>, set up <a href="https://github.com/crockeo/nvim/blob/6e19018c9a4d015aaed3dab40b8ce7efee59a60f/lua/plug_config/denite.lua#L36">a keybind</a> (don't mind the commented-out nonsense), and then we were off to the races. It looks something like this:</p>
 <img src="/res/blogs/break-projects/denite-example.png" alt="" /><h2 class="highlight-purple"><a href="https://github.com/crockeo/lisp-rs">I'm making a lisp</a></h2>
