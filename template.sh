@@ -21,6 +21,15 @@ for post in $posts; do
     $templater "$post" "$DIR/code/header.html" "$DIR/code/footer.html" "$out_file"
 done
 
+# templating each of the drafts in their own folder
+draft_posts=$(ls -d $DIR/blog/drafts/* | grep md)
+for post in $draft_posts; do
+    out_name=$(echo $(basename $post) | sed 's/md/html/')
+    out_file="$DIR/blog/drafts/$out_name"
+
+    $templater "$post" "$DIR/code/header.html" "$DIR/code/footer.html" "$out_file"
+done
+
 cat "$DIR/code/header.html" > blog.html
 cat << EndOfFile >> blog.html
 <h2>blog posts</h2>

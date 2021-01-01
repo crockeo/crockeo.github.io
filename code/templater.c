@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* TODO:
+ *   - indented unordered lists
+ *   - bold at the beginning of a line
+ *   - try to intentionally break it and see what happens
+ */
+
 // fputc except that it HTML-code escapes characters if applicable
 int fputc_esc(char c, FILE *out) {
   const char *output_str;
@@ -379,6 +385,17 @@ int convert_image(FILE *in_markdown, FILE *out_html) {
   return 0;
 }
 
+int convert_block_quote(FILE *in_markdown, FILE *out_html) {
+  take_oneof(in_markdown, "> \t", 3);
+  fprintf(out_html, "<blockquote>\n");
+  if (convert_text(in_markdown, out_html, 2)) {
+    return -1;
+  }
+  fprintf(out_html, "</blockquote>\n");
+
+  return 0;
+}
+
 int convert(FILE *in_markdown, FILE *out_html) {
   char c;
   while ((c = peek(in_markdown)) != EOF) {
@@ -405,6 +422,10 @@ int convert(FILE *in_markdown, FILE *out_html) {
       }
     } else if (c == '*') {
       if (convert_unordered_list(in_markdown, out_html)) {
+        return -1;
+      }
+    } else if (c == '>') {
+      if (convert_block_quote(in_markdown, out_html)) {
         return -1;
       }
     } else {

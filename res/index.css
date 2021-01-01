@@ -29,6 +29,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .blog-entry {
@@ -148,6 +150,10 @@ a {
 }
 
 @media only screen and (max-width: 768px) {
+    body {
+        padding: 1em 0rem 4rem 0rem;
+    }
+
     .top-bar {
         flex-direction: column;
         text-align: center;
@@ -169,7 +175,8 @@ a {
     }
 
     .blog-entry {
-        width: 80%;
+        box-sizing: border-box;
+        width: 95%;
     }
 }
 
@@ -193,4 +200,10 @@ h3 {
 
 p {
     margin: 0.2rem 0rem 1rem 0rem;
+}
+
+blockquote {
+    box-shadow: -0.15rem 0rem 0rem var(--hawaii-background-dark);
+    margin-left: 1rem;
+    padding-left: 1rem;
 }
