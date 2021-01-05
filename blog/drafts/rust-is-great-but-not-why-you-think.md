@@ -66,6 +66,10 @@ TODO: *write all of these*
     * etc.
 * talk about the macro system
 
+talk about macros in rust:
+
+https://www.youtube.com/watch?v=dZiWkbnaQe8
+
 ### For the product engineer
 
 * tokio and async
