@@ -7,84 +7,53 @@
   </head>
 
   <body>
-    <div class="container mx-auto px-4 py-4">
-      <div class="flex flex-row justify-between items-center">
-	<div class="flex flex-row items-center space-x-8">
-	  <img class="rounded-full w-32 h-32" src="./images/profile.jpeg" />
+    <div class="container mx-auto h-screen flex flex-col justify-center items-center space-y-16">
+      <div class="flex flex-row items-center space-x-8">
+	<img class="rounded-full w-48 h-48" src="./images/profile.jpeg" />
 
-	  <div class="flex flex-col">
-	    <div class="text-5xl font-semibold">Cerek Hillen</div>
-	    <div class="text-2xl text-gray-700">
-	      Software Engineer @
-	      <a class="font-bold text-[#ff00bf] hover:brightness-90" href="https://lyft.com">Lyft</a>
-	    </div>
-
-	    <div class="text-sm text-gray-500 flex flex-row space-x-2">
-	      <a href="tel:1-413-800-2077">+1 (413) 800-2077</a>
-	      <div class="font-bold">•</div>
-	      <a href="mailto:cerekh@gmail.com" target="_blank">cerekh@gmail.com</a>
-	    </div>
+	<div class="flex flex-col space-y-2">
+	  <div class="text-5xl font-semibold">Cerek Hillen</div>
+	  <div class="text-2xl text-gray-500">
+	    Software Engineer @
+	    <a class="font-bold text-[#ff00bf] hover:brightness-90" href="https://lyft.com">Lyft</a>
 	  </div>
-	</div>
 
-	<div class="flex flex-row space-x-8">
-	  <a href="https://github.com/crockeo" target="_blank">
-	    <img class="brightness-0 grayscale w-16 h-16" src="./images/GitHub-Mark-120px-plus.png" />
-	  </a>
-	  <a href="https://www.linkedin.com/in/cerek-hillen/" target="_blank">
-	    <img class="brightness-0 grayscale w-16 h-16" src="./images/LI-In-Bug.png" />
-	  </a>
+	  <div class="text-3xl flex flex-row justify-between items-center">
+	    <a href="https://github.com/crockeo">
+	      <img class="w-10 h-10" src="./images/github.png" />
+	    </a>
+	    <div class="font-bold">•</div>
+	    <a href="https://www.linkedin.com/in/cerek-hillen/">
+	      <img class="w-10 h-10" src="./images/LI-In-Bug.png" />
+	    </a>
+	    <div class="font-bold">•</div>
+	    <a href="tel:1-413-800-2077">📞</a>
+	    <div class="font-bold">•</div>
+	    <a href="mailto:cerekh@gmail.com" target="_blank">✉️</a>
+	  </div>
 	</div>
       </div>
 
-      <div class="px-16 py-8 space-y-8">
-	<div>
-	  <div class="text-4xl font-semibold">Work</div>
-	  <div class="space-y-4">
-	    <div>
-	      <div class="text-xl">Lyft (2020-present)</div>
-	      <div class="text-gray-700">Software Engineer</div>
-	      <ul class="text-sm list-disc list-inside">
-		<li>Led project to automatically update service dependencies to increase developer velocity and reduce overall dependency ecosystem complexity.</li>
-		<li>Reduced infraspend and future proofed Python networking with py-envoy-mobile.</li>
-		<li>Managed dependency ecosystem & build recipes for Python and Go.</li>
-		<li>Maintained and extended automatic code editing service inspired by Google’s Rosie.</li>
-		<li>Supported engineers on Python and Go, dependency management, builds, and distributed computing design patterns.</li>
-		<li>Launched new driver mode which allows Lyft to better manage baseline driver supply in regions with supply & demand mismatch.</li>
-		<li>Created new driver mode state database to track current and historical sessions.</li>
-		<li>Designed load testing and shadowing infrastructure for new driver mode to verify correctness and estimate value of various product policies.</li>
-	      </ul>
-	    </div>
+      <div class="flex flex-row space-x-16 text-sm text-gray-400">
+	<a class="flex flex-col items-center" href="https://github.com/crockeo/.emacs.d" target="_blank">
+	  <img class="w-16 h-16" src="./images/emacs.png" />
+	  <div>Emacs</div>
+	</a>
 
-	    <div>
-	      <div class="text-xl">Lyft (2019)</div>
-	      <div class="text-gray-700">Software Engineering Intern</div>
+	<a class="flex flex-col items-center" href="https://github.com/crockeo/nvim" target="_blank">
+	  <img class="w-16 h-16" src="./images/neovim.png" />
+	  <div>Neovim</div>
+	</a>
 
-	      <ul class="text-sm list-disc list-inside">
-		<li>Generalized driver application document model to support multiple pages.</li>
-		<li>Created experiment to collect insurance declarations using multi-page documents, rather than manual escalation to support agents.</li>
-	      </ul>
-	    </div>
+	<a class="flex flex-col items-center" href="https://github.com/crockeo?tab=repositories&q=&type=&language=rust" target="_blank">
+	  <img class="w-16 h-16" src="./images/rust.png" />
+	  <div>Rust</div>
+	</a>
 
-	    <div>
-	      <div class="text-xl">Facebook (2018)</div>
-	      <div class="text-gray-700">Software Engineering Intern</div>
-	      <ul class="text-sm list-disc list-inside">
-		<li>Leveraged Facebook Portal speech platform to build meeting room voice assistant.</li>
-		<li>Augmented speaker recognition service to dynamically build speaker candidate groups.</li>
-	      </ul>
-	    </div>
-	  </div>
-	</div>
-
-	<div>
-	  <div class="text-4xl font-semibold">Skills</div>
-	</div>
-
-	<div>
-	  <div class="text-4xl font-semibold">Education</div>
-	  <div class="text-xl">University of Massachusetts, Amherst (2016-2020)</div>
-	</div>
+	<a class="flex flex-col items-center" href="https://github.com/crockeo?tab=repositories&q=&type=&language=python" target="_blank">
+	  <img class="w-16 h-16" src="./images/python.png" />
+	  <div>Python</div>
+	</a>
       </div>
     </div>
   </body>
