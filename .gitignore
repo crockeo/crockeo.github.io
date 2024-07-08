@@ -1,3 +1,1 @@
-blog/drafts/*.html
-code/server/server
-code/templater
+/public/
