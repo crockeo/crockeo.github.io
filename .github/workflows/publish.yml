@@ -1,0 +1,19 @@
+name: publish
+on:
+  push:
+    branches: ["master"]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'build and deploy'
+        uses: shalzz/zola-deploy-action@v0.17.2
+        env:
+          PAGES_BRANCH: master
+          BUILD_DIR: .
+          TOKEN: ${{ secrets.PUBLIC_TOKEN }}
+          REPOSITORY: crockeo/crockeo.github.io
