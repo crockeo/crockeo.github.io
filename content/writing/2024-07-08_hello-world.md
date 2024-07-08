@@ -2,7 +2,6 @@
 title = "Hello World"
 description = "Populating some content! For Lorem Ipsum reasons."
 date = "2024-07-08"
-authors = ["Cerek Hillen"]
 +++
 
 # Hello World

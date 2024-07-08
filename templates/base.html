@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Home of the Crockeo</title>
     <link rel="stylesheet" href="/base.css" />
+    {% block head %} {% endblock %}
   </head>
 
   <body
@@ -33,9 +34,9 @@
     >
       <a href="/">🏡 Home</a>
       <span class="font-light">|</span>
-      <a href="/work">💽 Work</a>
-      <span class="font-light">|</span>
       <a href="/writing">📝 Writing</a>
+      <span class="font-light">|</span>
+      <a href="/work">💽 Work</a>
     </div>
 
     {% block content %} {% endblock %}

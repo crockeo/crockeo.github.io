@@ -1,0 +1,10 @@
+$background_color: rgb(236, 252, 203);
+$foreground_color: rgb(20, 83, 45);
+
+@mixin background_color {
+  color: $background_color;
+}
+
+@mixin foreground_color {
+  color: $foreground_color;
+}
