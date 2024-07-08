@@ -6,9 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Home of the Crockeo</title>
+    <link rel="stylesheet" href="base.css" />
   </head>
 
-  <body class="bg-lime-100 text-green-900">
+  <body
+    class="
+    bg-lime-100
+    text-green-900
+    flex
+    flex-col
+    h-screen
+    m-0
+    "
+  >
+    <div
+      class="
+      flex
+      flex-none
+      flex-row
+      font-semibold
+      justify-center
+      p-4
+      space-x-8
+      text-xl
+      "
+    >
+      <a href="/">🏡 Home</a>
+      <span class="font-light">|</span>
+      <a href="/work">💽 Work</a>
+      <span class="font-light">|</span>
+      <a href="/writing">📝 Writing</a>
+    </div>
+
     {% block content %} {% endblock %}
   </body>
 </html>
