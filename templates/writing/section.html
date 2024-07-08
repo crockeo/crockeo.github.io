@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div
+  class="
+  grow
+  mx-auto
+  mt-8
+  space-y-8
+  "
+>
+  {% for page in section.pages %}
+    <a
+      class="
+      block
+      border
+      border-lime-100
+      hover:border-green-900
+      transition
+      p-4
+      rounded-lg
+      "
+      href="{{ page.permalink }}"
+    >
+      <div class="flex flex-row items-end justify-between">
+        <div class="font-bold text-xl">{{ page.title }}</div>
+        <div class="italic text-sm">{{ page.date }}</div>
+      </div>
+
+      <p class="italic max-w-md">
+        {{ page.description }}
+      </p>
+    </a>
+  {% endfor %}
+</div>
+{% endblock content %}

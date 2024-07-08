@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div
+  class="
+  grow
+  mt-8
+  mx-auto
+  "
+>
+  <div class="flex flex-row items-end justify-between">
+    <div class="font-bold text-4xl">{{ page.title }}</div>
+    <div class="italic">{{ page.date }}</div>
+  </div>
+  <div class="italic">{{ page.description }}</div>
+
+  <hr class="max-w-xl my-2 border-green-900" />
+
+  <div class="max-w-xl">
+    {{ page.content | safe }}
+  </div>
+</div>
+
+{% endblock content %}
