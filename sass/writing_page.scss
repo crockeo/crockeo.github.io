@@ -1,38 +1,62 @@
 @use "colors.scss";
 
-/* TODO: remove all of the !important after i migrate off of tailwind */
+.content {
+  a {
+    text-decoration: underline;
+  }
 
-blockquote {
-  margin-left: 4px !important;
-  padding-left: 0.6rem !important;
-  margin-top: 0.25rem !important;
-  margin-bottom: 0.25rem !important;
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-color: colors.$foreground_color;
-  font-style: italic;
-}
+  blockquote {
+    margin-left: 4px;
+    padding-left: 0.6rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-color: colors.$foreground_color;
+    font-style: italic;
+  }
 
-h1 {
-  font-size: 1.4rem !important;
-  font-weight: 600 !important;
-  margin-top: 0.5rem !important;
-}
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
 
-h2 {
-  font-size: 1.2rem !important;
-  font-weight: 600 !important;
-  margin-top: 0.5rem !important;
-}
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
 
-h3 {
-  font-size: 1.0rem !important;
-  font-weight: 600 !important;
-  margin-top: 0.5rem !important;
-}
+  h3 {
+    font-size: 1.0rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
 
-pre {
-  border-radius: 0.4rem;
-  font-size: 0.8rem !important;
-  padding: 0.6rem 0.4rem;
+  ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    ul {
+      margin-top: 0rem;
+      margin-bottom: 0rem;
+    }
+
+    li {
+      list-style-position: outside;
+      list-style-type: disc;
+      margin-left: 1rem;
+    }
+  }
+
+  p + p {
+    margin-top: 0.25rem;
+  }
+
+  pre {
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.4rem;
+  }
 }
