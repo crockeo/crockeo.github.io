@@ -1,49 +1,100 @@
 +++
 title = "Graph Task Management"
 description = "Moving past the list, into something more confusing."
-date = "2024-07-18"
+date = "2024-07-21"
 draft = true
 +++
 
 # Overview
 
-For a while now (2-3yrs) I've been on the search for the """perfect""" task management system.
-Throughout this odyssey I developed some strong opinions on how such a system should work:
+For the past 4 years I've been on the search for the """perfect""" task management system.
+For me that means the system should:
 
-- It should be open source, and extensible.
-- It should give me ownership of my data.
-- It should be available across multiple devices.
-- It should provide some mechanism to sync between devices.
+- Be free and open source.
+- Give me ownership of my data.
+- Be available across multiple devices.
+- Provide some mechanism to sync between those devices.
+- Have a streamlined, primarily keyboard-based user experience.
 
-I still think those are true, and I'd like for a system to have each of these,
-but I think they've ultimately been supplanted by one goal:
-**I want a system which can accurately represent the messiness of real work.**
+I settled on [Things](https://culturedcode.com/things/),
+as it checks all of those boxes--except that it's not open source.
+It is, however, one of the few remaining pieces of software you can buy once and use forever.
+I thought it was a good deal to trade $60 for freedom from thinking about task management.
 
-# Idealized Systems for Idealized Work
+Except that I am still shackled to this work by one last idea:
+**Existing systmes don't let you accurately represent the messiness of real work.**
 
-Common task management systems are built for idealized work.
-This is the kind of work that one knows ahead of time,
-where none of the work is itself work discovery.
-This work is not messy, and often not interdependent.
+Or put another way:
+each task management system I've seen forces the user
+to contort their work into a format suitable to the system,
+but the system should instead support the essential structure of the work.
+I'm captured by that idea, and want to think long enough
+on how one could develop a system which supports the structure of messy work,
+while still being pleasant to use.
 
-## The Mind
+The rest of this blog post will be:
 
-I think before considering systems to organize work,
-we should think of work without a system.
-I think of this as the 0th dimension of task management.
-The mind is like a grab-bag which produces work at random.
-I'm sure this approach has the most variability for people,
-and for some may not even need an external system to manage it,
-but unfortunately my brain is not so well trained
-at producing the right information at the right time.
+- A brief overview of ways you can structure task management systems.
+- A pitch for graphs being well-suited to task management systems.
+- Musings on how to build an good user experience for such a system.
+- A request for involvement, if anyone in the community has ideas or feedback.
 
-## The List
+# Common Task Management Systems
 
-The most traditional task management system is the simple todo list.
-One writes down a sequence of things that must be done,
-where it is impossible to define any relation between the tasks.
-Oftentimes one will use the metaphor of reading order for sequencing,
-aka: top-down and left-to-right to suggest the idea that X must be done before Y.
+Before talking about graph-based task management,
+I want to enumerate the "essential" structure of other task management systems.
+Here "essential" just means ignoring the metadata of tasks,
+like support for scheduling work, assigning deadlines, adding tags, etc.
+These are not structural differentiators, and so they're not relevant here.
+
+This enumeration is useful as it allows us to collect some limitations of these systems
+which leads us naturally towards the structure of a graph.
+
+## 0 Dimensions // The Mind Grab-Bag
+
+Before considering a system which organizes work, let's consider the alternative.
+I consider the "grab-bag" the 0th dimension of a task management system.
+Usually this is stored in one's brain, and it's presented to them semi-randomly.
+You have no means to record, order, or relate work to each other in a durable fashion.
+Instead you get to grab work from the bag semi-randomly--usually by association.
+
+I'm sure there is variability in each person's mind.
+If you don't feel that this section accurately represents
+how you manage work in your mind: congratulations!
+Some of us are cursed to live with gale winds blowing
+ideas haphazardly through our heads.
+
+```
+   Do   dishes
+     the             the
+Take           Repair   fence
+  out
+   the trash     dog
+               the
+            Walk
+```
+
+This system works effectively when there are environmental signals
+to remind one of the work they need to do,
+like when there are dishes in the sink,
+or a dog that is whining.
+
+It does not work effectively when there is not an environmental signal,
+like if you have to schedule an appointment with your doctor for an annual physical.
+Nor does it work well when you want to make absolutely sure that you get something done;
+ultimately you're at the whim of your associative memory!
+
+## 1 Dimension // The List
+
+The simplest *external* task management system is the list.
+One writes down a sequence of things that must be done
+without any explicit relation between the tasks.
+
+Often one will use the metaphor of reading order for sequencing.
+Top-down and left-to-right suggest that which appears closer to the top-left
+must be done before that which appears closer to the bottom-right.
+
+For example:
 
 ```
 - Do the dishes
@@ -52,19 +103,34 @@ aka: top-down and left-to-right to suggest the idea that X must be done before Y
 - Repair the fence
 ```
 
-This approach works great for a simple workload
-where tasks are atomic units of work, and are not complex.
-But it is not suited to real work:
-often one is taking on large, complex projects
-which cannot be so easily understood as a list of unrelated tasks.
+This system is effective for simple workloads, where tasks are independent, atomic units of work.
+Crucially each element of the list needs to be simple enough that it can fit into your head.
 
-## The Tree
+It is not effective when your work is complex enough that it cannot fit into your head.
+In that case, you end up having a system which is half structured and half unstructured.
+The structured half of the list acts as environmental signal to trigger the grab-bag of your mind.
+You can attempt to sidestep this by enumerating all of your work,
+even the parts of a task which belong to another task,
+but in doing so you trade the unstructured _what_ (of what work must be done)
+with the unstructured _how_ (of how the work relates to each other).
 
-The tree is the first and most obvious generalization of the list.
-Instead of expressing tasks only as a list of independent work,
-you are now allowed to link tasks together to form "sub-tasks".
+## 2 Dimensions // The Tree
+
+The tree is a first step in generalizing the list to address the
+issue of decomposing large, complicated work into small, understandable work.
+
+I call it a "tree" because it's representable by a
+[tree data structure](https://en.wikipedia.org/wiki/Tree_(data_structure)),
+but it just means a list where each task can have sub-tasks.
+
+For example:
 
 ```
+- Do the dishes
+- Walk the dog
+- Take out the trash
+  - Collect trash from bathrooms
+  - Actually take out the trash
 - Repair the fence
   - Get supplies
     - Drill
@@ -73,73 +139,148 @@ you are now allowed to link tasks together to form "sub-tasks".
     - Chickenwire
   - Put up the new fence post
   - Put in the chickenwire
-- Put in a coop
-- Buy chickens
-- Incorporate S-corp "Eggckeo"
 ```
 
-This approach solves one of the issues of the list
-by allowing the user to decompose larger, composite tasks into many sub-tasks.
-It is well suited to projects without interdependent work,
-but it does not do well in places where work depends on each other.
+Where before the tasks "take out the trash" and "repair the fence"
+contained some amount of hidden, unsaid work in them (unstructured _what_),
+now each of their component sub-tasks are specified and attributed to the super-task.
 
-# A Real System for Real Work
+Note that there is still no mechanism to relate independent tasks to each other.
+There is nothing determining the order of "take out the trash" and "repair the fence,"
+and you couldn't articulate an ordering between them without also implying a hierarchy.
+This is the curse of a tree-based system:
+to define a relationship between two tasks
+you also have to make one the "parent" and one the "child."
+There is no way to link two tasks together such that one depends on the other
+without also implying this parent/child relationship.
 
-I posit that a *graph*-based task management system
-is the logical next step towards representing real work:
+This system is effective at representing more complex problems,
+by allowing the user to decompose them into smaller tasks.
+It solves the unstructured _what_ vs. unstructured _how_ dilemma
+for the parent/child relationship.
+Most every todo app I've encountered uses this system,
+but with some extra coat of paint on top.
 
-- Create a [directed graph](https://en.wikipedia.org/wiki/Directed_graph).
-- Define each task as a node with associated metadata like name, description, etc.
-- Define each edge to represent a dependency from between to tasks.
-  If there exists an edge `A -> B` then `A` depends on `B` being completed.
-- Enforce that the graph must remain [acyclic](https://en.wikipedia.org/wiki/Directed_acyclic_graph)
-  whenever an edge is added.
+However this system is not effective at representing non-parent/child relationships.
+It is not hard to imagine a real world scenario where such a relationship would crop up.
+Imagine:
 
-This approach is already a superset of the list and the tree:
+- Person 1 is shipping a project to develop a new piece of infrastructure for their company.
+- Person 2 depends on this infrastructure to ship a feature.
 
-- You can represent the list through a collection of nodes without edges.
-  If you want to develop a linearized format like reading a list top-to-bottom
-  you can add edges in reverse order of the list: `... -> C -> B -> A`.
+Shipping the infrastructure is not a child of shipping the feature,
+but that is the only way one could represent this dependency
+using the tree system.
 
-- You can represent a tree because a tree is a special case of a directed acyclic graph.
-  This is trivially true based on the [definition of a tree](https://en.wikipedia.org/wiki/Tree_(data_structure)#Mathematical_terminology).
-  You could represent the earlier example as something like:
+## 3 Dimensions // The Graph
 
-  ```
-  Repair the fence -> Get supplies
-  Repair the fence -> Put up the new fence post
-  Repair the fence -> ...
+The graph is the next step towards generalizing the concept of relationships between tasks.
+Again, I'm using computer science terminology
+and call this a "graph" because it's representable by a
+[directed graph data structure](https://en.wikipedia.org/wiki/Directed_graph).
 
-  Get supplies -> Drill
-  Get supplies -> Wood
-  Get supplies -> ...
+This formulation is probably less immediately familiar to folks
+who haven't developed software before,
+so I'll take a bit longer explaining it than the other systems to task management:
 
-  Put in a coop
+- You can have a collection of tasks,
+  where there is no implication of ordering of preference.
+  This corresponds to the set of vertices `V` of a directed graph.
 
-  etc.
-  ```
+- You can have a relationship named something like "blocking",
+  which can be thought of as two tasks `FromTask` and `ToTask`,
+  where if `FromTask` "blocks" `ToTask`,
+  `FromTask` must be done before `ToTask`.
+  This corresponds to the set of "arrows" `A` or "edges" `E` of a directed graph.
 
-More importantly: it also gives you new powers of expressivity.
-You can now define work which depends on each other in
-messy, compilcated, real ways.
+- Together these form a directed graph
+  which you can use to articulate complicated relationships between work.
 
-For example:
+As a simple example, imagine some of the tasks from earlier:
 
-- TODO: come up with a real-sounding example which isn't from work
+```
+             _  Take out the trash  _
+             /|                    |\
+            /                        \
+Collect the bathroom trash  Collect the kitchen trash <- Walk the dog
+                                     /|\                    /|\
+                                      |                      |
+                                Do the dishes                |
+                                     /|\                     |
+                                      |                      |
+                                Buy dish soap          Buy new leash
+                                      |                      |
+                                     \|/                     |
+                               Shopping List <---------------/
+```
+
+While this graph of tasks isn't obvious at first,
+you can think through how it represents a common sense plan
+that one might come up with in their head:
+
+- I need to take out the trash, and I don't want any leftover trash in the house.
+- I'm about to walk the dog, so I might as well bring out any... bags I have to collect.
+- The kitchen trash is the largest, so why not put it in there!
+- But I may also have some trash from cleaning the dishes
+  (e.g. food too big for the sink, but too small to be saved).
+- But to do that I need to buy new dish soap, because I're out.
+- So I need to go to the store to get the dish soap.
+- _Oh_! And I forgot that I needed to buy a new leash, because mine broke...
+
+This is a bit of a contrived situation,
+but you can see how even a simple set of tasks
+can be well represented in a graph.
+
+This system is effective at representing complex _and_ interrelated work.
+Complex work is well-handled by the same property available in trees:
+you can break down nebulous tasks into smaller, more understandable tasks.
+Interrelated work is well-handled by the fact that task `A` blocking task `B`
+does not need to imply that `A` is the child of `B`,
+so you can freely annotate which work depends on which other work.
+
+I have yet to find a kind of work this system cannot effectively represent.
+If a reader can come up with an example of real world tasks
+which is not effectively representable by this system: please let me know!
+
+_But_ I have noticed that this system struggles
+with certain tasks common to a task management system.
+Take the earlier example: you could do an analysis of the graph and find out that
+"collect the bathroom trash," "buy dish soap," and "buy new leash"
+are the three tasks which are "actionable" (aka: there is nothing blocking them).
+But which should you do? Which should you do first? And why should you do them?
+To answer these questions you have to understand the graph around these tasks,
+which is not as easy to do as just glancing at a todo list.
+
+That is the drawback of the graph: it is not useful by itself.
+A list or list-of-lists are useful, even when just expressed as pen on paper.
+Looking at a graph, especially as it grows in side, is not useful.
+Our brains simply are not well equipped to glance at a graph and understand its meaning.
+A graph is powerful tool for articulating the structure of work,
+but it _needs_ a well-designed user experience powered by a computer
+to let a user effectively interpret its contents.
 
 # Aside: Previous Work
 
-This is, unsurprisingly, a well-trodden space.
-For example you have [James Fisher's TODO DAG](https://jameshfisher.com/2013/12/19/todo-dag/)
-all the way back from 2013(!!!),
-the app [intention](https://about.i.ntention.app/) which James mentions at the end,
-[taskdb](https://github.com/andrey-utkin/taskdb),
-and now-dead masterplan.so, which was [immortalized on Hacker News](https://news.ycombinator.com/item?id=30205699).
+Taking a break from the navel gazing...
+This is a well-trodden space.
+You should take a minute to go through and read some related work.
+There's some good thought out there on this exact subject,
+and it's been very useful in forming my opinion:
 
-If you're interested in the space,
-I suggest you read up on others' perspectives on this work.
-As far as I know, none have succeeded in becoming popular
-(if only they had--then I wouldn't have to emark on this journey).
+- [James Fisher's TODO DAG](https://jameshfisher.com/2013/12/19/todo-dag/)
+  discussing much the same topic,
+  from all the way back in 2013!
+
+- The app [intention](https://about.i.ntention.app/)
+  which James mentions at the end of his blog post.
+
+- [taskdb](https://github.com/andrey-utkin/taskdb)
+  which I stumbled upon while looking into this space.
+
+---
+
+TODO: edit here and below
+
 
 # How to make it work?
 

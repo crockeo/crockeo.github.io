@@ -1,6 +1,10 @@
+@use "sass:color";
 @use "colors.scss";
 
 .content {
+  /* how do i make it more readable, without sacrificing the nice colors? */
+  color: #000;
+
   a {
     text-decoration: underline;
   }
@@ -14,6 +18,14 @@
     border-left-width: 1px;
     border-color: colors.$foreground_color;
     font-style: italic;
+  }
+
+  p code {
+    background: color.adjust(colors.$background_color, $lightness: +50%, $saturation: -50%);
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
   }
 
   h1 {
@@ -34,6 +46,12 @@
     margin-top: 0.5rem;
   }
 
+  hr {
+    border-color: colors.$foreground_color;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
   ul {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -51,12 +69,14 @@
   }
 
   p + p {
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
   }
 
   pre {
     border-radius: 0.4rem;
     font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+    margin-top: 0.75rem;
     padding: 0.6rem 0.4rem;
   }
 }
