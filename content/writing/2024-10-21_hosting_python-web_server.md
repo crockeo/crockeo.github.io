@@ -67,7 +67,7 @@ You can find an up-to-date version [in the GitHub repo for this project](https:/
 
 - I was using Ubuntu for this project, so going to talk about configuring this for Ubuntu. Your mileage may vary when using other operating systems.
 - Install Nginx: `sudo apt-get update && sudo apt-get install nginx`. This will start `nginx` by default so you can go to `http://<your IP>` and see the default `nginx` screen.
-- And then you can set a sane default configuration for your app:
+- And then you can set a sane default configuration for your app by replacing the content in `/etc/nginx/sites-enabled/default`:
 
 ```nginx.conf
 server {
@@ -98,6 +98,10 @@ upstream uvicorn {
 }
 ```
 
+- And then you need to restart nginx: `sudo systemctl reload nginx`.
+- You can go to the IP address of the box you've provisioned
+  and you should a "502 Bad Gateway" page.
+
 # DNS Configuration
 
 - The specific actions you have to take are going to vary a lot by your specific DNS provider. I'll talk about Squarespace, but first talk about the task in generic terms.
@@ -110,9 +114,12 @@ upstream uvicorn {
 
 # HTTPS Configuration
 
-TL;DR: [certbot](https://certbot.eff.org/instructions)
-
-I followed the [Nginx + Linux (snap)](https://certbot.eff.org/instructions?ws=nginx&os=snap) instructions piece by piece and it all worked for me. You should be able to do the same--it's super easy to set up.
+- TL;DR: [certbot](https://certbot.eff.org/instructions)
+- I followed the [Nginx + Linux (snap)](https://certbot.eff.org/instructions?ws=nginx&os=snap) instructions piece by piece and it all worked for me. You should be able to do the same--it's super easy to set up.
+- If you get an error saying that it can't install because of a server name,
+  you've probably forgotten to replace `<your URL>`.
+	Try replacing it with your domain name :)
+- And finally: `sudo systemctl reload nginx`.
 
 # Running Your Code
 
