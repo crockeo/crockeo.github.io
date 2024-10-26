@@ -8,20 +8,21 @@
     flex
     flex-col
     items-center
+    -mt-16
     md:flex-row
     md:space-x-8
     "
   >
     <img class="rounded-full border-2 border-green-900 shadow shadow-lime-700 w-48 h-48 " src="profile.jpeg" />
 
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col justify-center items-center md:items-start space-y-2">
       <div class="text-5xl font-semibold">Cerek Hillen</div>
       <div class="text-2xl text-lime-700">
         <span class="text-lime-700">Sr. Software Engineer @</span>
         <a class="font-bold hover:brightness-90 underline" href="https://ramp.com">Ramp</a>
       </div>
 
-      <div class="text-3xl flex flex-row justify-center items-center px-2 space-x-16">
+      <div class="text-3xl flex flex-row justify-between items-center px-2 w-full">
         <a href="https://github.com/crockeo">
           <img class="w-8 filter-green-900" src="github-brands.svg" />
         </a>
@@ -30,6 +31,12 @@
 
         <a href="https://www.linkedin.com/in/cerek-hillen/">
           <img class="w-8 filter-green-900" src="linkedin-brands.svg" />
+        </a>
+
+        <div class="font-bold">•</div>
+
+        <a href="mailto:me@crockeo.net">
+          <img class="w-8 filter-green-900" src="envelope-solid.svg" />
         </a>
       </div>
     </div>
