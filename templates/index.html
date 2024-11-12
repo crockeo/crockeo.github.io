@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<div class="mx-auto flex flex-col grow justify-center items-center space-y-8">
+<div class="mx-auto flex flex-col grow justify-between items-center space-y-8">
+  <div></div>
   <div
     class="
     flex
@@ -19,27 +20,32 @@
       <div class="text-5xl font-semibold">Cerek Hillen</div>
       <div class="text-2xl text-lime-700">
         <span class="text-lime-700">Sr. Software Engineer @</span>
-        <a class="font-bold hover:brightness-90 underline" href="https://ramp.com">Ramp</a>
+        <a class="font-bold hover:brightness-90 hover:underline" href="https://ramp.com">Ramp</a>
       </div>
 
       <div class="text-3xl flex flex-row justify-between items-center px-2 w-full">
-        <a href="https://github.com/crockeo">
+        <a class="p-2 rounded-full transition hover:bg-lime-200" href="https://github.com/crockeo">
           <img class="w-8 filter-green-900" src="github-brands.svg" />
         </a>
 
         <div class="font-bold">•</div>
 
-        <a href="https://www.linkedin.com/in/cerek-hillen/">
+        <a class="p-2 rounded-full transition hover:bg-lime-200" href="https://www.linkedin.com/in/cerek-hillen/">
           <img class="w-8 filter-green-900" src="linkedin-brands.svg" />
         </a>
 
         <div class="font-bold">•</div>
 
-        <a href="mailto:me@crockeo.net">
+        <a class="p-2 rounded-full transition hover:bg-lime-200" href="mailto:me@crockeo.net">
           <img class="w-8 filter-green-900" src="envelope-solid.svg" />
         </a>
       </div>
     </div>
+  </div>
+
+  <div class="flex flex-col pb-2 w-full">
+    <div class="font-bold">Currently feeling:</div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5KxVfDHXkb9WubsDcPiaul?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 </div>
 

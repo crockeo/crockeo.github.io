@@ -18,6 +18,7 @@
     flex-col
     h-screen
     m-0
+    select-none
     "
   >
     <div
@@ -32,11 +33,11 @@
       text-xl
       "
     >
-      <a href="/">🏡 Home</a>
+      <a class="group" href="/">🏡 <span class="group-hover:underline">Home</span></a>
       <span class="font-light">|</span>
-      <a href="/writing">📝 Writing</a>
+      <a class="group" href="/writing">📝 <span class="group-hover:underline">Writing</span></a>
       <span class="font-light">|</span>
-      <a href="/work">💽 Work</a>
+      <a class="group" href="/work">💽 <span class="group-hover:underline">Work</span></a>
     </div>
 
     {% block content %} {% endblock %}
