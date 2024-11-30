@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://crockeo.net/</loc>
+    </url>
+    <url>
+        <loc>https://crockeo.net/secret/</loc>
+    </url>
+    <url>
+        <loc>https://crockeo.net/work/</loc>
+    </url>
+    <url>
+        <loc>https://crockeo.net/writing/</loc>
+    </url>
+    <url>
+        <loc>https://crockeo.net/writing/home-web-server/</loc>
+        <lastmod>2024-11-30</lastmod>
+    </url>
+    <url>
+        <loc>https://crockeo.net/writing/hosting-python-web-server/</loc>
+        <lastmod>2024-10-21</lastmod>
+    </url>
+</urlset>

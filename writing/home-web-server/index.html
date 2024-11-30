@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Home of the Crockeo</title>
+    <link rel="stylesheet" href="/base.css" />
+    
+<link rel="stylesheet" href="/writing_page.css" />
+
+  </head>
+
+  <body
+    class="
+    bg-lime-100
+    text-green-900
+    flex
+    flex-col
+    h-screen
+    m-0
+    select-none
+    "
+  >
+    <div
+      class="
+      flex
+      flex-none
+      flex-row
+      font-semibold
+      justify-center
+      p-4
+      space-x-8
+      text-xl
+      "
+    >
+      <a class="group" href="/">🏡 <span class="group-hover:underline">Home</span></a>
+      <span class="font-light">|</span>
+      <a class="group" href="/writing">📝 <span class="group-hover:underline">Writing</span></a>
+      <span class="font-light">|</span>
+      <a class="group" href="/work">💽 <span class="group-hover:underline">Work</span></a>
+    </div>
+
+    
+
+<div
+  class="
+  grow
+  mt-8
+  mx-auto
+  pb-16
+  "
+>
+  <div class="flex flex-row items-end justify-between">
+    <div class="font-bold text-4xl">Home Webserver</div>
+    <div class="italic">2024-11-30</div>
+  </div>
+  <div class="italic">Buying a used Mac Mini, setting up a home server.</div>
+
+  <hr class="max-w-xl my-2 border-green-900" />
+
+  <div class="content max-w-xl">
+    <p>I bought a used Mac Mini on Craigslist recently for about $200. I've been wanting to set up a home server for quite a while, and it seemed like a good entrypoint into the space! It has a couple of nice things for such a cheap price:</p>
+<ul>
+<li>A 3.00GHz Intel i7-4578U.</li>
+<li>A nice 16GB of RAM.</li>
+<li>About 100GB of HDD (yes, a real spinning disk!)</li>
+</ul>
+<p>It's not a powerhouse by any means, but it's been powerful enough to set up a couple of services, like:</p>
+<ul>
+<li>A <a href="https://www.minecraft.net/en-us">Minecraft</a> server.</li>
+<li>A <a href="https://www.factorio.com/">Factorio</a> server.</li>
+<li><a href="https://github.com/prometheus/prometheus">Prometheus</a> and <a href="https://github.com/grafana/grafana">Grafana</a>, along with a <a href="https://github.com/crockeo/minecraft-healthcheck">healthchecker for Minecraft</a>, so I can be oncall for my hobby project (🙃).</li>
+</ul>
+<p>I'm planning on using it to host a couple of websites as well, at least while I don't care too much about uptime.</p>
+<h1 id="installation-networking">Installation &amp; Networking</h1>
+<p>I installed <a href="https://ubuntu.com/download/server">Ubuntu Server</a>, which was surprisingly easy. Folks on the internet warned about the networking issues after install. The Broadcom chip that this Mac Mini uses doesn't have a networking driver installed by default. I just ran an Ethernet to the Mac when I set it up, installed the proprietary Broadcom driver, and then we were off to the races!</p>
+<h2 id="hibernate">Hibernate</h2>
+<p>By default Ubuntu Server was configured to sleep/hibernate when there wasn't much activity. That was surprising to me, because I meant to host the server 24/7! You can turn this off with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo systemctl mask \
+</span><span>	hibernate.target \
+</span><span>	hybrid-sleep.target \
+</span><span>	sleep.target \
+</span><span>	suspend.target
+</span></code></pre>
+<p>And then the server will stay online 24/7!</p>
+<h2 id="ipv6-issues">IPv6 Issues</h2>
+<p>Except that the Broadcom driver would SIGSEGV sometimes when using IPv6!</p>
+<p>I ended up uninstalling the Broadcom driver, putting the server next to the router, and just running an Ethernet cable permanently. I wish I had a stack trace on hand, but it's long ago enough that it's not available in <code>/var/log/syslog</code> 😔.</p>
+<h2 id="mystery-networking-issues">Mystery Networking Issues</h2>
+<p>And even still, sometimes the networking stack crashes! I've noticed this happens while using the Minecraft Bedrock server, but I haven't debugged further than that. You can fix it by restarting <code>NetworkManager</code>... but I can't <code>ssh</code> in while this is happening.</p>
+<p>I've done a cursed thing by setting up a <code>systemd</code> service named <code>network-repair</code> which is just a cursed little script:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#65737e;">#!/usr/bin/env python3.12
+</span><span style="color:#b48ead;">import </span><span>logging
+</span><span style="color:#b48ead;">import </span><span>subprocess
+</span><span style="color:#b48ead;">import </span><span>time
+</span><span>
+</span><span>logging.</span><span style="color:#bf616a;">basicConfig</span><span>()
+</span><span>logger = logging.</span><span style="color:#bf616a;">getLogger</span><span>(__name__)
+</span><span>logger.</span><span style="color:#bf616a;">setLevel</span><span>(logging.</span><span style="color:#bf616a;">INFO</span><span>)
+</span><span>
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">main</span><span>() -&gt; </span><span style="color:#d08770;">None</span><span>:
+</span><span>    addr = &quot;</span><span style="color:#a3be8c;">8.8.8.8</span><span>&quot;
+</span><span>    </span><span style="color:#b48ead;">while </span><span style="color:#d08770;">True</span><span>:
+</span><span>        logger.</span><span style="color:#bf616a;">info</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Polling </span><span>{addr}</span><span style="color:#a3be8c;">...</span><span>&quot;)
+</span><span>
+</span><span>        is_online = </span><span style="color:#d08770;">False
+</span><span>        </span><span style="color:#b48ead;">try</span><span>:
+</span><span>            subprocess.</span><span style="color:#bf616a;">check_call</span><span>((&quot;</span><span style="color:#a3be8c;">ping</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">-c</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">1</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">-w</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">5</span><span>&quot;, addr), </span><span style="color:#bf616a;">stdout</span><span>=subprocess.</span><span style="color:#bf616a;">PIPE</span><span>, </span><span style="color:#bf616a;">stderr</span><span>=subprocess.</span><span style="color:#bf616a;">PIPE</span><span>)
+</span><span>            is_online = </span><span style="color:#d08770;">True
+</span><span>        </span><span style="color:#b48ead;">except </span><span>Exception:
+</span><span>            logger.</span><span style="color:#bf616a;">error</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Failed to connect to </span><span>{addr}&quot;, </span><span style="color:#bf616a;">exc_info</span><span>=</span><span style="color:#d08770;">True</span><span>)
+</span><span>            is_online = </span><span style="color:#d08770;">False
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if </span><span>not is_online:
+</span><span>            logger.</span><span style="color:#bf616a;">warning</span><span>(&quot;</span><span style="color:#a3be8c;">Lost connectivity. Attempting to restart NetworkManager.</span><span>&quot;)
+</span><span>            </span><span style="color:#b48ead;">try</span><span>:
+</span><span>                subprocess.</span><span style="color:#bf616a;">run</span><span>((&quot;</span><span style="color:#a3be8c;">systemctl</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">restart</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">NetworkManager</span><span>&quot;))
+</span><span>            </span><span style="color:#b48ead;">except </span><span>Exception:
+</span><span>                logger.</span><span style="color:#bf616a;">error</span><span>(&quot;</span><span style="color:#a3be8c;">Unable to restart NetworkManager</span><span>&quot;, </span><span style="color:#bf616a;">exc_info</span><span>=</span><span style="color:#d08770;">True</span><span>)
+</span><span>
+</span><span>        time.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">30</span><span>)
+</span><span>
+</span><span>
+</span><span style="color:#b48ead;">if </span><span>__name__ == &quot;</span><span style="color:#a3be8c;">__main__</span><span>&quot;:
+</span><span>    </span><span style="color:#bf616a;">main</span><span>()
+</span></code></pre>
+<p>TL;DR: check if we have internet and, if we don't, try restarting our <code>NetworkManager</code>.</p>
+<p>Eventually™ I'll figure out what's actually going wrong and fix it, but for now, this is working well enough! 30s of downtime every couple of days isn't so bad. That's still &gt;99% uptime!</p>
+<h1 id="systemd-services"><code>systemd</code> Services</h1>
+<p>I don't know how to write good <code>systemd</code> services, but I do know how to write <code>systemd</code> services. I've been using a basic template:</p>
+<ul>
+<li>Make a user with <code>sudo useradd --no-create-home --user-group &lt;username&gt;</code>.</li>
+<li>Make &gt;=1 directory under <code>/opt</code> which will contain the content for the service.
+<ul>
+<li>E.g. I've added <code>/opt/minecraft</code>, to contain the Minecraft Bedrock server.</li>
+<li>And then you have to <code>sudo chown -R &lt;username&gt;:&lt;username&gt; /opt/&lt;directory&gt;</code> to make the user own the directory.</li>
+</ul>
+</li>
+<li>Create a <code>systemd</code> service file, and put it under <code>/etc/systemd/system/</code>:</li>
+</ul>
+<pre data-lang="ini" style="background-color:#2b303b;color:#c0c5ce;" class="language-ini "><code class="language-ini" data-lang="ini"><span style="color:#b48ead;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=&lt;name&gt;
+</span><span style="color:#65737e;">; If this needs the network:
+</span><span style="color:#bf616a;">After</span><span>=network-online.target
+</span><span>
+</span><span style="color:#b48ead;">[Service]
+</span><span style="color:#65737e;">; Give each service its own user + group,
+</span><span style="color:#65737e;">; which only has access to its content:
+</span><span style="color:#bf616a;">User</span><span>=&lt;username&gt;
+</span><span style="color:#bf616a;">Group</span><span>=&lt;username&gt;
+</span><span style="color:#bf616a;">Restart</span><span>=on-failure
+</span><span style="color:#bf616a;">ExecStart</span><span>=&lt;executable + args&gt;
+</span><span>
+</span><span style="color:#65737e;">; Can set `WorkingDirectory` if you need it:
+</span><span style="color:#bf616a;">WorkingDirectory</span><span>=&lt;path&gt;
+</span><span>
+</span><span style="color:#65737e;">; And then you can also set environment variables:
+</span><span style="color:#bf616a;">Environment</span><span>=</span><span style="color:#a3be8c;">&quot;&lt;key&gt;=&lt;value&gt;&quot;
+</span><span>
+</span><span style="color:#b48ead;">[Install]
+</span><span style="color:#bf616a;">WantedBy</span><span>=multi-user.target
+</span></code></pre>
+<ul>
+<li>Then turn it on:
+<ul>
+<li>To make it start on bootup: <code>systemctl enable &lt;name&gt;.service</code> (and its opposite: <code>systemctl disable</code>).</li>
+<li>To make it start immediately: <code>systemctl start &lt;name&gt;.service</code> (and again, its opposite: <code>systemctl stop</code>).</li>
+</ul>
+</li>
+<li>And you can monitor it with <code>sudo journalctl -u &lt;name&gt;.service</code>.</li>
+</ul>
+<h1 id="monitoring">Monitoring</h1>
+<p>Like I said, I configured Grafana and Prometheus to set up monitoring and alerting. With the rest of this blog post you should have the skills to set them up at this point:</p>
+<ul>
+<li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/">Grafana's install instructions</a> are pretty straightforward.</li>
+<li>Prometheus is a bit more complicated:
+<ul>
+<li><a href="https://prometheus.io/download/">You have to download compiled binaries from their site</a>.</li>
+<li>And then write your own <code>prometheus.service</code> to run it. I used <a href="https://janakiev.com/blog/prometheus-setup-systemd/">this blog post</a> when setting it up initially.</li>
+</ul>
+</li>
+<li>You can configure <a href="https://grafana.com/docs/grafana/latest/datasources/prometheus/">Grafana to use Prometheus</a>.</li>
+<li>And then use Grafana to <a href="https://grafana.com/docs/grafana/latest/dashboards/">make some dashboards</a>, and set up <a href="https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/integrations/configure-email/">email notification</a>.</li>
+</ul>
+<p>And then BOOM! You can be oncall for your own hobby project. 🎉</p>
+<h1 id="admonition">Admonition</h1>
+<p>This was all thrown together haphazardly, mostly from memory. If something here isn't working for you feel free to complain to me at <a href="mailto:me@crockeo.net">me@crockeo.net</a>. I'm happy to dig into it and issue a correction.</p>
+
+  </div>
+</div>
+
+
+  </body>
+</html>
