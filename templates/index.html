@@ -2,6 +2,19 @@
 
 {% block content %}
 
+<script type="application/javascript">
+
+window.addEventListener("load", function() {
+  const options = [
+    "Your favorite DevX engineer's favorite DevX engineer.",
+    "Please, please, please, don't make me cry when I just wrote my code so nice.",
+    "I just got my coding license last week, just like we always talked about.",
+  ];
+  document.getElementById("funny-blurb").innerHTML = options[Math.floor(Math.random()*options.length)];
+});
+
+</script>
+
 <div class="mx-auto flex flex-col grow justify-between items-center space-y-8">
   <div></div>
   <div
@@ -43,7 +56,9 @@
     </div>
   </div>
 
-  <div />
+  <div class="italic py-2 text-wrap text-xs" id="funny-blurb">
+    &nbsp;
+  </div>
 </div>
 
 {% endblock content %}
