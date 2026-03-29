@@ -71,6 +71,42 @@
       margin-left: 1rem;
     }
 
+    li + li {
+      margin-top: 0.5rem;
+    }
+
+    li code {
+      background: color.adjust(colors.$background_color, $lightness: +50%, $saturation: -50%);
+      border-radius: 0.25rem;
+      font-size: 0.9rem;
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+    }
+  }
+
+  ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    ol {
+      margin-top: 0rem;
+      margin-bottom: 0rem;
+    }
+
+    li {
+      list-style-position: outside;
+      list-style-type: decimal;
+      margin-left: 1rem;
+
+      &::marker {
+        font-weight: bold;
+      }
+    }
+
+    li + li {
+      margin-top: 0.5rem;
+    }
+
     li code {
       background: color.adjust(colors.$background_color, $lightness: +50%, $saturation: -50%);
       border-radius: 0.25rem;

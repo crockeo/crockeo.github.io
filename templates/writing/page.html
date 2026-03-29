@@ -14,15 +14,15 @@
   pb-16
   "
 >
-  <div class="flex flex-row items-end justify-between">
+  <div class="flex flex-row items-end justify-between space-x-2">
     <div class="font-bold text-4xl">{{ page.title }}</div>
     <div class="italic">{{ page.date }}</div>
   </div>
   <div class="italic">{{ page.description }}</div>
 
-  <hr class="max-w-xl my-2 border-green-900" />
+  <hr class="w-full my-2 border-green-900" />
 
-  <div class="content max-w-xl">
+  <div class="content max-w-xl select-text">
     {{ page.content | safe }}
   </div>
 </div>
