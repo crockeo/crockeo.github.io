@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Home of the Crockeo</title>
+    <link rel="stylesheet" href="/base.css" />
+    
+<link rel="stylesheet" href="/writing_page.css" />
+
+  </head>
+
+  <body
+    class="
+    bg-lime-100
+    text-green-900
+    flex
+    flex-col
+    h-screen
+    m-0
+    select-none
+    "
+  >
+    <div
+      class="
+      flex
+      flex-none
+      flex-row
+      font-semibold
+      justify-center
+      p-4
+      space-x-8
+      text-xl
+      "
+    >
+      <a class="group" href="/">🏡 <span class="group-hover:underline">Home</span></a>
+      <span class="font-light">|</span>
+      <a class="group" href="/writing">📝 <span class="group-hover:underline">Writing</span></a>
+      <span class="font-light">|</span>
+      <a class="group" href="/work">💽 <span class="group-hover:underline">Work</span></a>
+    </div>
+
+    
+
+<div
+  class="
+  grow
+  mt-8
+  mx-auto
+  pb-16
+  "
+>
+  <div class="flex flex-row items-end justify-between space-x-2">
+    <div class="font-bold text-4xl">What Build if Free?</div>
+    <div class="italic">2026-03-29</div>
+  </div>
+  <div class="italic">What would I build if I were free from the constraints of capital?</div>
+
+  <hr class="w-full my-2 border-green-900" />
+
+  <div class="content max-w-xl select-text">
+    <h1 id="preface">Preface</h1>
+<p>Before starting, I want to lay out my intent with this blog post.</p>
+<ul>
+<li>
+<p>I'm frustrated with much software I use every day. I want to outline a kind of software I would like to use.</p>
+</li>
+<li>
+<p>I hope that in putting this out into the world, someone will tell me this already exists, and I can stop thinking about building it.</p>
+</li>
+</ul>
+<h1 id="intro">Intro</h1>
+<p>Unfortunately I have to eat 😔, which means that I cannot build whatever I want. Unfortunately "wouldn't this be cool" is not a good monetization strategy. In fact for me "wouldn't it be cool" often sits in direct <em>opposition</em> to monetization. The software I find most exciting removes centralized control, provides data ownership, and gives interoperability.</p>
+<p>So, say money were not an issue. Maybe I become unimaginably rich. Maybe a nice VC who wants to throw away some money. What would I build?</p>
+<h1 id="themes">Themes</h1>
+<p>First, a grab bag:</p>
+<div style="display: grid; grid-template-columns: auto auto auto">
+<ul>
+  <li>Homelab</li>
+  <li>Offline first</li>
+  <li>Peer-to-peer</li>
+</ul>
+<ul>
+  <li>Self-hostable</li>
+  <li>Live multiplayer</li>
+  <li>CRDTs</li>
+</ul>
+<ul>
+  <li>Task management</li>
+  <li>Planning</li>
+  <li>Budgeting</li>
+</ul>
+</div>
+<p>These are split into two groups:</p>
+<ol>
+<li>Technical requirements which support digital liberty.</li>
+<li>Problems I happen to want to solve.</li>
+</ol>
+<p>First I would make solving these problems easy (make a library), and then easily solve these problems (make some apps).</p>
+<h1 id="plan">Plan</h1>
+<p>All of the problems I want to solve can be structured as block storage with transactions and peer-to-peer sync.</p>
+<h2 id="building-blocks">Building blocks</h2>
+<p>Define a <code>Block</code> to be composed of:</p>
+<ul>
+<li>A primary key <code>id</code>.</li>
+<li>A type identifier <code>type</code>.</li>
+<li>Timekeeping metadata like <code>created_at</code>, <code>modified_at</code>, <code>deleted_at</code>.</li>
+<li>A <code>blob</code> which is just a bunch of opaque bytes used by an app.</li>
+</ul>
+<p>Define a <code>Machine</code> as a unique identifier which is stable for a given user-machine-app triplet.</p>
+<h2 id="layers">Layers</h2>
+<p>The library would be built out of layers:</p>
+<ul>
+<li>A storage medium which supports lookups and transactional writes.</li>
+<li>Peer discovery and auth.</li>
+<li>Pluggable transport mechanisms.</li>
+<li>A sync algorithm to trade updates back and forth.</li>
+<li>An approach to merging data.</li>
+<li>Good developer tooling.</li>
+</ul>
+<h3 id="storage">Storage</h3>
+<p>At rest a <code>Block</code> is stored in the storage layer. The storage layer needs to be able to do two things:</p>
+<ul>
+<li>Uniquely address a <code>Block</code> by its ID.</li>
+<li>Allow one to atomically update any number of <code>Blocks</code> at once.</li>
+</ul>
+<p>You can imagine implementing this in any number of ways: A SQL database, a filesystem, cloud object storage.</p>
+<p>This structure must give <code>O(1)</code> access to a given block based on its ID. Using this and transactional writes, you can support other more interesting kinds of lookups. You could create a <code>Block</code> which is an index. Or you could store a number of other blocks' keys.</p>
+<h3 id="peer-discovery-and-auth">Peer discovery and auth</h3>
+<p>To start this would be very simple. Each <code>Machine</code> would catalog a set of peers it wanted to connect to, and a mechanism to trust that peer. Imagine a manifest which described IP addresses to connect to and that peer's base64 encoded public key. You can imagine implementing auth on this based on a <a href="https://en.wikipedia.org/wiki/EdDSA#Ed25519">ed25519</a> challenge-response.</p>
+<p>Later I would like to enable end-to-end encryption, so that one could share their data over an untrusted relay knowing that only <em>their</em> nodes can access their data. I know that this is possible, but I don't know how to do it, so I'm ignoring it for now.</p>
+<h3 id="connecting-to-peers">Connecting to peers</h3>
+<p>I would want to make this system support multiple transport mechanisms. It should work on any transport mechanism that can send a logical stream of bytes. To I would target good old fashioned TCP (for most nodes) and websockets (for the web). It should be easy to support a new transport protocol.</p>
+<h3 id="sync-algorithm">Sync algorithm</h3>
+<p>The sync algorithm would allow two peers to symmetrically exchange data, with either end initiating a connection. The sync algorithm would choose the minimum number of <code>Blocks</code> to send over.</p>
+<p>At a high level the sync algorithm would look like:</p>
+<ul>
+<li>Two peers connect to each other.</li>
+<li>They select a leader.
+<ul>
+<li>Send and receive a randomly generated number.</li>
+<li>Whoever gets a higher number is the leader.</li>
+<li>Upon tie, try again.</li>
+</ul>
+</li>
+<li>They negotiate a ser/de format
+<ul>
+<li>They send over ser/de format preferences as a set of format IDs and a float value in <code>[0, 1]</code>.</li>
+<li>This is done in a single ser/de format that every node must support, like <code>json</code>.</li>
+<li>They choose the option which jointly optimizes the preference.</li>
+<li>If there is no single winner, the leader chooses randomly.</li>
+</ul>
+</li>
+<li>They exchange metadata to enable selective synchronization.
+<ul>
+<li>What type of blocks does each side care about?</li>
+<li>When was the last time they have synced with each other <code>Machine</code>?</li>
+</ul>
+</li>
+<li>Using this information they each calculate which <code>Blocks</code> to stream based on type and recency of modification.</li>
+<li>They take turns (with the leader going first) sending all of their <code>Blocks</code> and the other reading.</li>
+</ul>
+<p>I am a bit afraid of sync algorithms, because I know the cost of under-selecting <code>Blocks</code> to share. I'm sure the final version of this would be better thought through. Perhaps this would be a good place to use deterministic testing <a href="https://antithesis.com/">like Antithesis</a>.</p>
+<h3 id="merging-data">Merging data</h3>
+<p>This is the part where you expect me to say "everything is a CRDT," but I actually don't think that's the right approach!</p>
+<p>Merging data should be an application-level concern. The core library only understands <code>Blocks</code> as containing an opaque series of bytes. The only conflict free algorithm we could implement is "last-write-wins," which is not suitable for many applications.</p>
+<p>Instead, I want to let each application define a set of merging algorithms. Each one would apply to one or more types of <code>Block</code>. If the application contains such a merging algorith, it is applied. If it does not contain a merging algorithm, we use last-write-wins.</p>
+<h2 id="admonition">Admonition</h2>
+<p>I know this isn't perfect! There are a couple of things I'm thinking about, even right after this stream of consciousness blog post.</p>
+<ul>
+<li>
+<p><strong>How does live multiplayer work?</strong> I'm thinking you just have a keepalive connection to a peer where you continuously stream updates to a set of <code>Blocks</code>. Who knows! 🤷</p>
+</li>
+<li>
+<p><strong>How do you evolve schemas (<code>Block</code> and <code>blob</code>)?</strong> <code>Block</code> schema is hard, but at least for the blob perhaps we include a <code>version</code> tag. If someone sends a <code>version</code> that you do not support, you could just ignore the <code>Block</code> update entirely.</p>
+</li>
+<li>
+<p><strong>How does it <em>scale</em>?</strong> I don't think it does! I don't know if it needs to. I'm concerned about unique identifiers for <code>Machines</code>, and each <code>Machine</code> having to track each other <code>Machine</code>. I plan to deploy these apps with at most 5 or 6 nodes (all of my and my wife's devices).</p>
+</li>
+<li>
+<p><strong>How do you do permissions?</strong> I think this can be solved at the application layer. If you have listed a peer as trusted, presumably you trust the code it's running. You can mark certain <code>Blocks</code> as being owned by certain users, and preventing other users from updating them. A particular node could reject modifications to <code>Blocks</code> from <code>Machines</code> belonging to users who do not have write permissions, but this leaves the machine in an inconsistent state.</p>
+</li>
+</ul>
+<p>If you have more questions or critiques, please share them! I want this idea to be as good as it can be :)</p>
+<h1 id="apps">Apps</h1>
+<p>What could I build with this?</p>
+<ul>
+<li>
+<p><strong>A relay</strong> would blindly collect and relay <code>Blocks</code> from every <code>Machine</code> it can peer with. It would need to act a little differently, as it would have no "application layer" to perform merges. Instead it would need to store each most recent version of each <code>Block</code> as per each <code>Machine</code> who has synced to it.</p>
+</li>
+<li>
+<p><strong>A budgeting app</strong> would be structured as 3 kinds of <code>Blocks</code>, with supporting indices. An account, a transfer, and a recurring transfer (which would generate a transfer on a recurring basis). One can import data from their financial providers using SimpleFIN.</p>
+</li>
+<li>
+<p><strong>A task manager and planner</strong> would be structured as two kinds of <code>Blocks</code>. A task and a graph. A task would contain all of the metadata typically associated with a task in task management (title, description, due date, etc.). A graph would just contain connections between task IDs.</p>
+</li>
+</ul>
+
+  </div>
+</div>
+
+
+  </body>
+</html>
